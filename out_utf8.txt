@@ -1,0 +1,15 @@
+HWND: 0x3a079c, Parent: 0x0, Class: WorkerW, Title: 
+HWND: 0x108a0, Parent: 0x0, Class: WorkerW, Title: 
+HWND: 0x3023e, Parent: 0x0, Class: WorkerW, Title: 
+HWND: 0x1028e, Parent: 0x0, Class: WorkerW, Title: 
+HWND: 0x10280, Parent: 0x0, Class: WorkerW, Title: 
+HWND: 0x40134, Parent: 0x0, Class: WorkerW, Title: 
+HWND: 0x200fe, Parent: 0x0, Class: WorkerW, Title: 
+HWND: 0x10220, Parent: 0x0, Class: WorkerW, Title: 
+HWND: 0x1019c, Parent: 0x0, Class: WorkerW, Title: 
+HWND: 0x10196, Parent: 0x0, Class: WorkerW, Title: 
+HWND: 0x10192, Parent: 0x0, Class: WorkerW, Title: 
+HWND: 0x2013e, Parent: 0x0, Class: WorkerW, Title: 
+HWND: 0x20138, Parent: 0x0, Class: WorkerW, Title: 
+HWND: 0x305e4, Parent: 0x0, Class: WorkerW, Title: 
+HWND: 0x20222, Parent: 0x20124, Class: WorkerW, Title: 

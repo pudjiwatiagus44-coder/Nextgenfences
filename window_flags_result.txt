@@ -1,0 +1,15 @@
+﻿======================================================================
+Fence 窗口标志检查
+======================================================================
+
+找到 7 个可见的 Qt 窗口：
+
+HWND: 460160
+  Title: 'pythonw'
+  Class: Qt6101QWindowToolSaveBits
+  Style: 0x-6A000000
+  ExStyle: 0x00080088
+  Is Tool Window: True
+  Is App Window: False
+  Is Popup: True
+  Is Child: False

@@ -1,0 +1,235 @@
+HWND: 0xb6064c, Parent: 0x0, Class: Qt6101QWindowToolSaveBits, Title: python
+HWND: 0x30250, Parent: 0x0, Class: SystemTray_Main, Title: 电池指示器
+HWND: 0x1029c, Parent: 0x1029a, Class: ATL:00007FFA3811D230, Title: Network Flyout
+HWND: 0xcd0734, Parent: 0x0, Class: Qt5QWindowToolSaveBits, Title: SelectFloatBall
+HWND: 0x50660, Parent: 0x0, Class: Chrome_WidgetWin_1, Title: 天气
+HWND: 0x6055a, Parent: 0x0, Class: Chrome_WidgetWin_1, Title: 资料卡
+HWND: 0x10690, Parent: 0x0, Class: 360NetmonWindowClass{364B97E2-D014-4e2f-88C7-482B040F0D31}, Title: Q360NetmonWnd
+HWND: 0x670808, Parent: 0x0, Class: DNDProxyWnd, Title: DNDProxyWnd
+HWND: 0x2c073a, Parent: 0x0, Class: Chrome_WidgetWin_1, Title: MyDesktop - Antigravity - floating_ball.py [Administrator]
+HWND: 0x60b6a, Parent: 0x0, Class: Qt6101QWindowIcon, Title: python
+HWND: 0xa0af4, Parent: 0x0, Class: Qt6101QWindowIcon, Title: python
+HWND: 0x150620, Parent: 0x0, Class: Qt6101QWindowIcon, Title: python
+HWND: 0xe09e6, Parent: 0x0, Class: Qt6101QWindowIcon, Title: python
+HWND: 0x80c60, Parent: 0x0, Class: Qt6101QWindowIcon, Title: python
+HWND: 0x5e082a, Parent: 0x0, Class: Qt6101QWindowIcon, Title: python
+HWND: 0x508de, Parent: 0x0, Class: Chrome_WidgetWin_1, Title: Google Antigravity Auth Success - Google Chrome
+HWND: 0xe0bec, Parent: 0x0, Class: COMTASKSWINDOWCLASS, Title: Task Host Window
+HWND: 0x10688, Parent: 0x0, Class: Qt5QWindowIcon, Title: 金山词霸2024
+HWND: 0x60d0c, Parent: 0x0, Class: _q_titlebar, Title: _q_titlebar
+HWND: 0x50aec, Parent: 0x0, Class: _q_titlebar, Title: _q_titlebar
+HWND: 0x1d09e4, Parent: 0x0, Class: _q_titlebar, Title: _q_titlebar
+HWND: 0x80a0a, Parent: 0x0, Class: _q_titlebar, Title: _q_titlebar
+HWND: 0x80d48, Parent: 0x0, Class: _q_titlebar, Title: _q_titlebar
+HWND: 0x4609e8, Parent: 0x0, Class: _q_titlebar, Title: _q_titlebar
+HWND: 0x82077c, Parent: 0x0, Class: _q_titlebar, Title: _q_titlebar
+HWND: 0x8098a, Parent: 0x0, Class: Chrome_WidgetWin_1, Title: Launchpad
+HWND: 0x450892, Parent: 0x0, Class: HwndWrapper[LetsPRO.exe;;aeb65a7c-40b4-477e-a2f8-480ee40dd42d], Title: LetsVPN
+HWND: 0xa0810, Parent: 0x10010, Class: Windows.UI.Core.CoreWindow, Title: DesktopWindowXamlSource
+HWND: 0x2b0224, Parent: 0x0, Class: Chrome_WidgetWin_1, Title: QQ
+HWND: 0xdc07d6, Parent: 0x0, Class: Chrome_WidgetWin_1, Title: QQ
+HWND: 0x40958, Parent: 0x0, Class: Chrome_WidgetWin_1, Title: 缩略图
+HWND: 0x8d03fa, Parent: 0x0, Class: Chrome_WidgetWin_1, Title: QQ闪传悬浮窗
+HWND: 0x11501ee, Parent: 0x0, Class: Chrome_WidgetWin_1, Title: QQ
+HWND: 0xd203e0, Parent: 0x0, Class: CASCADIA_HOSTING_WINDOW_CLASS, Title: 管理员:  VPN环境恢复工具 (查资料模式)
+HWND: 0xa0806, Parent: 0x0, Class: CASCADIA_HOSTING_WINDOW_CLASS, Title: 管理员:  VPN环境恢复工具 (查资料模式)
+HWND: 0xaf0226, Parent: 0x0, Class: OrayUI, Title: HUAWEI GOT-W29
+HWND: 0x370768, Parent: 0x2025c, Class: OrayUI, Title: 向日葵远程控制
+HWND: 0x10448, Parent: 0x2025c, Class: OrayUI, Title: 系统设置
+HWND: 0x2025c, Parent: 0x0, Class: OrayUI, Title: 向日葵远程控制
+HWND: 0x308fc, Parent: 0x0, Class: .NET-BroadcastEventWindow.4.0.0.0.18ae462.0, Title: .NET-BroadcastEventWindow.4.0.0.0.18ae462.0
+HWND: 0x306fa, Parent: 0x0, Class: HwndWrapper[LetsPRO.exe;;14211d15-1908-470d-ba7b-34f6d3c93931], Title: MediaContextNotificationWindow
+HWND: 0xc0546, Parent: 0x0, Class: HwndWrapper[LetsPRO.exe;;a233e571-298f-4ddb-861b-ae7be7cddb43], Title: SystemResourceNotifyWindow
+HWND: 0x509ee, Parent: 0x0, Class: OleDdeWndClass, Title: DDE Server Window
+HWND: 0xe0880, Parent: 0x0, Class: Windows Terminal Admin a47b7976c0101203, Title: Windows Terminal
+HWND: 0x7508b6, Parent: 0x0, Class: Nucleus Auth Window, Title: Microsoft OneDrive Sync Service
+HWND: 0x1071e, Parent: 0x0, Class: HwndWrapper[ZapyaAdaptor.exe;;6b42a5a3-d8a4-451a-af2a-9a4ad7fcbb9f], Title: ZapyaAdaptor
+HWND: 0x1071a, Parent: 0x0, Class: HwndWrapper[ZapyaAdaptor.exe;;618f41eb-766f-4f87-bde5-b1a3c2aa64c0], Title: Hidden Window
+HWND: 0x8033c, Parent: 0x0, Class: shellhack_server_{B9927402-3800-41BE-A788-F457879AC4E0}, Title: 0x00001204
+HWND: 0x20232, Parent: 0x0, Class: Windows.UI.Core.CoreWindow, Title: 设置
+HWND: 0x20242, Parent: 0x0, Class: ApplicationFrameWindow, Title: 设置
+HWND: 0x4034c, Parent: 0x0, Class: 360AsyncNetwork, Title: 360AsyncNetwork
+HWND: 0x1071c, Parent: 0x0, Class: HwndWrapper[ZapyaAdaptor.exe;;5cdafddf-2275-4c57-be34-5cb587d9a5e6], Title: MediaContextNotificationWindow
+HWND: 0x10718, Parent: 0x0, Class: HwndWrapper[ZapyaAdaptor.exe;;3dfc5dcb-1b1f-44ad-b25e-74a683450075], Title: SystemResourceNotifyWindow
+HWND: 0x106ec, Parent: 0x0, Class: PowerWordHelperWindow, Title: PowerWordHelperTitle
+HWND: 0x106de, Parent: 0x0, Class: Q360AdPopBlocker, Title: 360_ADPOP_BLOCKER
+HWND: 0x106b6, Parent: 0x0, Class: shellhack_server_{B9927402-3800-41BE-A788-F457879AC4E0}, Title: 0x000025c8
+HWND: 0x1068e, Parent: 0x0, Class: #360IDSMultiUserWnd, Title: 360IDSMultiUserWnd
+HWND: 0x10686, Parent: 0x0, Class: QTrayIconMessageWindowClass, Title: QTrayIconMessageWindow
+HWND: 0x10684, Parent: 0x0, Class: #360NetDefenderMonitorWnd, Title: 360NetDefenderMonitorWnd
+HWND: 0x30642, Parent: 0x0, Class: #360NetDefenderMultiUserWnd, Title: 360NetDefenderMultiUserWnd
+HWND: 0x20626, Parent: 0x0, Class: GDI+ Hook Window Class, Title: GDI+ Window (360tray.exe)
+HWND: 0x205ca, Parent: 0x0, Class: wingetWindow, Title: WingetMessageOnlyWindow
+HWND: 0x205cc, Parent: 0x0, Class: H.NotifyIcon_bfc26dbf-6054-4f51-8163-6f841da4cf4f, Title: H.NotifyIcon_bfc26dbf-6054-4f51-8163-6f841da4cf4f
+HWND: 0x105d4, Parent: 0x0, Class: GDI+ Hook Window Class, Title: GDI+ Window (UniGetUI.exe)
+HWND: 0x105bc, Parent: 0x0, Class: WinUIDesktopWin32WindowClass, Title: UniGetUI - 以管理员身份运行
+HWND: 0x1058e, Parent: 0x0, Class: TipMsgWnd, Title: tipMsgWnd
+HWND: 0x1042a, Parent: 0x10428, Class: OrayUI, Title: Menu
+HWND: 0x1041c, Parent: 0x10418, Class: OrayUI, Title: tool_tips
+HWND: 0x1059a, Parent: 0x10570, Class: VoiceTipsWnd, Title: MicLink_Voice_Tip
+HWND: 0x10598, Parent: 0x10570, Class: SmartTipsWnd, Title: MicLink_SmartTip
+HWND: 0x10570, Parent: 0x0, Class: MicLink, Title: MicLinkMain
+HWND: 0x10594, Parent: 0x0, Class: AiMouseSet, Title: AiMouseSet
+HWND: 0x10592, Parent: 0x0, Class: desktop, Title: desktop
+HWND: 0x10590, Parent: 0x0, Class: GeneralMsgWnd, Title: GeneralMsgWnd
+HWND: 0x1058c, Parent: 0x0, Class: tuchu, Title: TuchuWnd
+HWND: 0x1058a, Parent: 0x0, Class: image_up, Title: ImageWnd
+HWND: 0x10588, Parent: 0x0, Class: huabi, Title: huabi
+HWND: 0x10586, Parent: 0x0, Class: LPWnd, Title: lpwnd
+HWND: 0x10584, Parent: 0x0, Class: PenWnd, Title: penwnd
+HWND: 0x10582, Parent: 0x0, Class: ScrTransWnd, Title: scrtranswnd
+HWND: 0x10580, Parent: 0x0, Class: TransWnd, Title: transwnd
+HWND: 0x10578, Parent: 0x0, Class: SearchWnd, Title: searchwnd
+HWND: 0x10576, Parent: 0x0, Class: IconWnd, Title: iconwnd
+HWND: 0x1056e, Parent: 0x0, Class: GDI+ Hook Window Class, Title: GDI+ Window (AiMouse.exe)
+HWND: 0x10554, Parent: 0x0, Class: Qt5QWindowToolSaveBits, Title: 芒果桌面系统{22AB1EB3-12A5-490B-A033-2D4E9457F24A}
+HWND: 0x50564, Parent: 0x0, Class: Qt5QWindowOwnDCIcon, Title: mgdsksystem
+HWND: 0x2055c, Parent: 0x0, Class: NVOpenGLPbuffer, Title: __wglDummyWindowFodder
+HWND: 0x10568, Parent: 0x0, Class: NVOpenGLPbuffer, Title: NVOGLDC invisible
+HWND: 0x10542, Parent: 0x0, Class: Qt5152TrayIconMessageWindowClass, Title: QTrayIconMessageWindow
+HWND: 0x1046a, Parent: 0x0, Class: MMSessionEndMonitorWnd, Title: 网易邮箱大师
+HWND: 0x203d8, Parent: 0x0, Class: GDI+ Hook Window Class, Title: GDI+ Window (SunloginClient.exe)
+HWND: 0x10410, Parent: 0x0, Class: SecHealth Window Class, Title: SecurityHealthSystray
+HWND: 0x1040c, Parent: 0x0, Class: RealtekAudioBackgroundProcessClass, Title: RealtekAudioBackgroundProcessClass
+HWND: 0x203ee, Parent: 0x0, Class: .NET-BroadcastEventWindow.bf7771.0, Title: .NET-BroadcastEventWindow.bf7771.0
+HWND: 0x103c2, Parent: 0x0, Class: LOCATIONNOTIFICATION, Title: 位置通知
+HWND: 0x30098, Parent: 0x0, Class: GDI+ Hook Window Class, Title: GDI+ Window (Explorer.EXE)
+HWND: 0x40034, Parent: 0x0, Class: NVSVC64.DLL, Title: NvSvc
+HWND: 0x20086, Parent: 0x0, Class: UxdService, Title: UxdService
+HWND: 0x102da, Parent: 0x0, Class: UxdService, Title: UxdService
+HWND: 0x102aa, Parent: 0x0, Class: BluetoothNotificationAreaIconWindowClass, Title: BluetoothNotificationAreaIconWindowClass
+HWND: 0x10292, Parent: 0x0, Class: MS_WebcheckMonitor, Title: MS_WebcheckMonitor
+HWND: 0x2024a, Parent: 0x0, Class: OleDdeWndClass, Title: DDE Server Window
+HWND: 0x20154, Parent: 0x0, Class: BroadcastListenerWindowThreadClass10616, Title: BroadcastListenerWindow
+HWND: 0x20150, Parent: 0x0, Class: BroadcastListenerWindowThreadClass10600, Title: BroadcastListenerWindow
+HWND: 0x20186, Parent: 0x0, Class: BroadcastListenerWindowThreadClass10568, Title: BroadcastListenerWindow
+HWND: 0x8013a, Parent: 0x0, Class: BroadcastListenerWindowThreadClass10520, Title: BroadcastListenerWindow
+HWND: 0x1017e, Parent: 0x0, Class: BroadcastListenerWindowThreadClass10504, Title: BroadcastListenerWindow
+HWND: 0x1010a, Parent: 0x0, Class: PushNotificationsPowerManagement, Title: Windows Push Notifications Platform
+HWND: 0x100f2, Parent: 0x0, Class: BroadcastListenerWindowThreadClass9308, Title: BroadcastListenerWindow
+HWND: 0x100ec, Parent: 0x0, Class: BroadcastListenerWindowThreadClass9296, Title: BroadcastListenerWindow
+HWND: 0x100d8, Parent: 0x0, Class: COMTASKSWINDOWCLASS, Title: Task Host Window
+HWND: 0x100c2, Parent: 0x0, Class: BroadcastListenerWindowThreadClass9112, Title: BroadcastListenerWindow
+HWND: 0x100ac, Parent: 0x0, Class: NvContainerWindowClass000021B4, Title: NvContainerWindowClass000021B4
+HWND: 0x200a8, Parent: 0x0, Class: NvContainerWindowClass0000219C, Title: NvContainerWindowClass0000219C
+HWND: 0x1005e, Parent: 0x0, Class: NvContainerWindowClass00000D0C, Title: NvContainerWindowClass00000D0C
+HWND: 0x2004a, Parent: 0x0, Class: Dwm, Title: DWM Notification Window
+HWND: 0x10314, Parent: 0x0, Class: Windows.UI.Core.CoreWindow, Title: Windows 输入体验
+HWND: 0x705a4, Parent: 0x0, Class: GDI+ Hook Window Class, Title: GDI+ Window (crashpad_handler.exe)
+HWND: 0x20124, Parent: 0x0, Class: Progman, Title: Program Manager
+HWND: 0x101e4, Parent: 0x101e2, Class: IME, Title: Default IME
+HWND: 0x1502a4, Parent: 0x106d0, Class: MSCTFIME UI, Title: MSCTFIME UI
+HWND: 0x106d0, Parent: 0x106ce, Class: IME, Title: Default IME
+HWND: 0x50136, Parent: 0x10146, Class: MSCTFIME UI, Title: MSCTFIME UI
+HWND: 0x10146, Parent: 0x10144, Class: IME, Title: Default IME
+HWND: 0x4094e, Parent: 0x40976, Class: MSCTFIME UI, Title: MSCTFIME UI
+HWND: 0x40976, Parent: 0x50660, Class: IME, Title: Default IME
+HWND: 0x10270, Parent: 0x1026e, Class: IME, Title: Default IME
+HWND: 0x117078a, Parent: 0x670808, Class: IME, Title: Default IME
+HWND: 0x30738, Parent: 0x5062e, Class: CiceroUIWndFrame, Title: CiceroUIWndFrame
+HWND: 0x10722, Parent: 0x30202, Class: CiceroUIWndFrame, Title: CiceroUIWndFrame
+HWND: 0x20099c, Parent: 0x370778, Class: MSCTFIME UI, Title: MSCTFIME UI
+HWND: 0x370778, Parent: 0x2c073a, Class: IME, Title: Default IME
+HWND: 0x1019a, Parent: 0x10102, Class: MSCTFIME UI, Title: MSCTFIME UI
+HWND: 0x10102, Parent: 0x305e4, Class: IME, Title: Default IME
+HWND: 0x70a1a, Parent: 0xc05d8, Class: MSCTFIME UI, Title: MSCTFIME UI
+HWND: 0xc05d8, Parent: 0x60b6a, Class: IME, Title: Default IME
+HWND: 0x19089a, Parent: 0x270888, Class: MSCTFIME UI, Title: MSCTFIME UI
+HWND: 0x270888, Parent: 0x508de, Class: IME, Title: Default IME
+HWND: 0x1070e, Parent: 0x205a8, Class: MSCTFIME UI, Title: MSCTFIME UI
+HWND: 0x205a8, Parent: 0x10688, Class: IME, Title: Default IME
+HWND: 0x70adc, Parent: 0x1b0558, Class: IME, Title: Default IME
+HWND: 0x70648, Parent: 0x19c07c0, Class: IME, Title: Default IME
+HWND: 0x909cc, Parent: 0x1c0740, Class: IME, Title: Default IME
+HWND: 0x60948, Parent: 0x6088e, Class: IME, Title: Default IME
+HWND: 0x1a0952, Parent: 0xa107e2, Class: IME, Title: Default IME
+HWND: 0x26085e, Parent: 0x13081a, Class: IME, Title: Default IME
+HWND: 0xc0854, Parent: 0xd0812, Class: IME, Title: Default IME
+HWND: 0x406c6, Parent: 0xc084c, Class: MSCTFIME UI, Title: MSCTFIME UI
+HWND: 0xc084c, Parent: 0x450892, Class: IME, Title: Default IME
+HWND: 0x30986, Parent: 0x40968, Class: IME, Title: Default IME
+HWND: 0x90822, Parent: 0x209f6, Class: MSCTFIME UI, Title: MSCTFIME UI
+HWND: 0x209f6, Parent: 0xa0806, Class: IME, Title: Default IME
+HWND: 0x5b00c4, Parent: 0x6a0784, Class: IME, Title: Default IME
+HWND: 0x15e0840, Parent: 0x1080240, Class: IME, Title: Default IME
+HWND: 0x11e0416, Parent: 0xf403e8, Class: IME, Title: Default IME
+HWND: 0x10434, Parent: 0x1041a, Class: MSCTFIME UI, Title: MSCTFIME UI
+HWND: 0x1041a, Parent: 0x2025c, Class: IME, Title: Default IME
+HWND: 0x5062e, Parent: 0x0, Class: CiceroUIWndFrame, Title: CiceroUIWndFrame
+HWND: 0x70858, Parent: 0x160850, Class: IME, Title: Default IME
+HWND: 0x127079e, Parent: 0x3a079c, Class: IME, Title: Default IME
+HWND: 0x86093c, Parent: 0x7508b6, Class: IME, Title: Default IME
+HWND: 0x3a07b8, Parent: 0x86061a, Class: IME, Title: Default IME
+HWND: 0x302d4, Parent: 0x10716, Class: MSCTFIME UI, Title: MSCTFIME UI
+HWND: 0x10716, Parent: 0x1071e, Class: IME, Title: Default IME
+HWND: 0x2044e, Parent: 0x2045a, Class: IME, Title: Default IME
+HWND: 0x108a2, Parent: 0x108a0, Class: IME, Title: Default IME
+HWND: 0x10802, Parent: 0x107fc, Class: IME, Title: Default IME
+HWND: 0x10804, Parent: 0x107fe, Class: IME, Title: Default IME
+HWND: 0x10800, Parent: 0x207fa, Class: IME, Title: Default IME
+HWND: 0x107ea, Parent: 0x107e8, Class: IME, Title: Default IME
+HWND: 0x107e0, Parent: 0x107de, Class: IME, Title: Default IME
+HWND: 0x701ec, Parent: 0x8033c, Class: IME, Title: Default IME
+HWND: 0x2027a, Parent: 0x30028, Class: IME, Title: Default IME
+HWND: 0x20238, Parent: 0x3023e, Class: IME, Title: Default IME
+HWND: 0x20234, Parent: 0x20232, Class: IME, Title: Default IME
+HWND: 0x40256, Parent: 0x20252, Class: MSCTFIME UI, Title: MSCTFIME UI
+HWND: 0x20252, Parent: 0x20242, Class: IME, Title: Default IME
+HWND: 0x2072e, Parent: 0x50632, Class: IME, Title: Default IME
+HWND: 0x1072c, Parent: 0x1072a, Class: IME, Title: Default IME
+HWND: 0x10728, Parent: 0x10726, Class: IME, Title: Default IME
+HWND: 0x30202, Parent: 0x0, Class: CiceroUIWndFrame, Title: CiceroUIWndFrame
+HWND: 0x1070a, Parent: 0x10708, Class: IME, Title: Default IME
+HWND: 0x10706, Parent: 0x10704, Class: IME, Title: Default IME
+HWND: 0x10702, Parent: 0x10700, Class: IME, Title: Default IME
+HWND: 0x106f0, Parent: 0x106ec, Class: IME, Title: Default IME
+HWND: 0x106c0, Parent: 0x106be, Class: IME, Title: Default IME
+HWND: 0x106b8, Parent: 0x106b6, Class: IME, Title: Default IME
+HWND: 0x10682, Parent: 0x305fa, Class: IME, Title: Default IME
+HWND: 0x2067c, Parent: 0x2067a, Class: IME, Title: Default IME
+HWND: 0x205c8, Parent: 0x205ca, Class: IME, Title: Default IME
+HWND: 0x105d6, Parent: 0x105d4, Class: IME, Title: Default IME
+HWND: 0x105c0, Parent: 0x105bc, Class: IME, Title: Default IME
+HWND: 0x105a0, Parent: 0x1059e, Class: IME, Title: Default IME
+HWND: 0x1057e, Parent: 0x10574, Class: MSCTFIME UI, Title: MSCTFIME UI
+HWND: 0x10574, Parent: 0x10570, Class: IME, Title: Default IME
+HWND: 0x10572, Parent: 0x1056e, Class: IME, Title: Default IME
+HWND: 0x20560, Parent: 0x20562, Class: IME, Title: Default IME
+HWND: 0x10556, Parent: 0x10554, Class: IME, Title: Default IME
+HWND: 0x2055e, Parent: 0x2055c, Class: IME, Title: Default IME
+HWND: 0x1056a, Parent: 0x10568, Class: IME, Title: Default IME
+HWND: 0x10544, Parent: 0x10542, Class: IME, Title: Default IME
+HWND: 0x104ba, Parent: 0x104b8, Class: IME, Title: Default IME
+HWND: 0x104a4, Parent: 0x104a2, Class: IME, Title: Default IME
+HWND: 0x1047e, Parent: 0x2047c, Class: IME, Title: Default IME
+HWND: 0x10476, Parent: 0x10472, Class: IME, Title: Default IME
+HWND: 0x1046c, Parent: 0x1046a, Class: IME, Title: Default IME
+HWND: 0x203d4, Parent: 0x203d8, Class: IME, Title: Default IME
+HWND: 0x10412, Parent: 0x10410, Class: IME, Title: Default IME
+HWND: 0x1040e, Parent: 0x1040c, Class: IME, Title: Default IME
+HWND: 0x203f0, Parent: 0x203ee, Class: IME, Title: Default IME
+HWND: 0x103c4, Parent: 0x103c2, Class: IME, Title: Default IME
+HWND: 0x50060, Parent: 0x30098, Class: IME, Title: Default IME
+HWND: 0x2006c, Parent: 0x200a4, Class: IME, Title: Default IME
+HWND: 0x20072, Parent: 0x20086, Class: IME, Title: Default IME
+HWND: 0x10290, Parent: 0x1028e, Class: IME, Title: Default IME
+HWND: 0x10282, Parent: 0x10280, Class: IME, Title: Default IME
+HWND: 0x2024e, Parent: 0x40134, Class: IME, Title: Default IME
+HWND: 0x1020a, Parent: 0x10208, Class: IME, Title: Default IME
+HWND: 0x10206, Parent: 0x10204, Class: IME, Title: Default IME
+HWND: 0x1019e, Parent: 0x1019c, Class: IME, Title: Default IME
+HWND: 0x2011e, Parent: 0x2013e, Class: IME, Title: Default IME
+HWND: 0x300e6, Parent: 0x20154, Class: IME, Title: Default IME
+HWND: 0x20152, Parent: 0x20150, Class: IME, Title: Default IME
+HWND: 0x20182, Parent: 0x20186, Class: IME, Title: Default IME
+HWND: 0x10184, Parent: 0x8013a, Class: IME, Title: Default IME
+HWND: 0x10180, Parent: 0x1017e, Class: IME, Title: Default IME
+HWND: 0x1010c, Parent: 0x1010a, Class: IME, Title: Default IME
+HWND: 0x100f4, Parent: 0x100f2, Class: IME, Title: Default IME
+HWND: 0x100ee, Parent: 0x100ec, Class: IME, Title: Default IME
+HWND: 0x100c6, Parent: 0x100c2, Class: IME, Title: Default IME
+HWND: 0x100ae, Parent: 0x100ac, Class: IME, Title: Default IME
+HWND: 0x100aa, Parent: 0x200a8, Class: IME, Title: Default IME
+HWND: 0x10316, Parent: 0x10314, Class: IME, Title: Default IME
+HWND: 0x6703f6, Parent: 0xb003ec, Class: IME, Title: Default IME
+HWND: 0x40980, Parent: 0x705a4, Class: IME, Title: Default IME
