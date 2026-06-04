@@ -1,0 +1,15 @@
+# Build artifacts
+build/
+dist/
+NextGenFences*.exe
+NextGenFences*.zip
+
+# PyInstaller outputs
+*.spec
+*.pyc
+__pycache__/
+Release_v1.0/
+
+# Logs
+*.log
+
