@@ -1,4 +1,4 @@
-import os
+﻿import os
 import sys
 import logging
 import win32gui
@@ -341,6 +341,7 @@ class FenceWidget(QWidget):
         self.font_size = font_size
         self.sort_by = sort_by
         self.sort_order = sort_order
+        self._user_dragged = False  # Flag to track if user manually reordered
         self.setAcceptDrops(True)
         self.setMouseTracking(True)
         
@@ -411,26 +412,13 @@ class FenceWidget(QWidget):
 
         # Attach to desktop if no parent
         if not parent:
-            # 暂时禁用桌面嵌入，避免Fence窗口消失的问题
+# 暂时禁用桌面嵌入，避免Fence窗口消失的问题
             # QTimer.singleShot(500, self.attach_to_desktop)
             # QTimer.singleShot(2000, self.attach_to_desktop)
             # QTimer.singleShot(5000, self.attach_to_desktop)
 
             # self.visibility_timer = QTimer(self)
-            # self.visibility_timer.timeout.connect(self.ensure_visible)
-            # self.visibility_timer.start(5000)
-
-            # self.attachment_timer = QTimer(self)
-            # self.attachment_timer.timeout.connect(self.check_attachment)
-            # self.attachment_timer.start(10000)
-
-            # 延迟 500ms 确保窗口已创建
-            # QTimer.singleShot(500, self.attach_to_desktop)
-            
-            # 添加定时器确保窗口始终可见
-            # self.visibility_timer = QTimer(self)
-            # self.visibility_timer.timeout.connect(self.ensure_visible)
-            # self.visibility_timer.start(5000)  # 每 5 秒检查一次
+            pass
 
     def check_attachment(self):
         """定期检查嵌入状态，确保窗口仍然附着在桌面层"""
@@ -641,7 +629,7 @@ class FenceWidget(QWidget):
                         needs_reflow = True
             
             # Check if sort order needs to be applied
-            if self.sort_by != "custom":
+            if self.sort_by != "custom" and not self._user_dragged:
                 # Sort custom_order based on sort_by
                 def get_sort_key(path):
                     if path not in file_stats: return ""
@@ -653,8 +641,11 @@ class FenceWidget(QWidget):
                 if sorted_files != self.custom_order:
                     logging.info(f"Applying sort: {self.sort_by} {self.sort_order}")
                     self.custom_order = sorted_files
-                    # Let's update custom_order to reflect current sort, so it stays sorted.
                     needs_reflow = True
+            
+            # Reset the user-dragged flag after processing
+            if self._user_dragged:
+                self._user_dragged = False
 
             if needs_reflow:
                 self.reflow_layout()
@@ -756,13 +747,40 @@ class FenceWidget(QWidget):
             file_path = mime.text().replace("internal_move:", "")
             if file_path in self.custom_order:
                 self.custom_order.remove(file_path)
-                self.custom_order.append(file_path)
+                
+                # Calculate drop position based on mouse position
+                drop_y = event.position().y()
+                drop_x = event.position().x()
+                
+                # Get icon sizes based on view mode
+                icon_h = 80
+                if self.view_mode == "icon_large": icon_h = 100
+                if self.view_mode == "icon_small": icon_h = 60
+                
+                icon_w = 80
+                if self.view_mode == "icon_large": icon_w = 100
+                if self.view_mode == "icon_small": icon_w = 60
+                
+                # Calculate row/column from position
+                row_height = icon_h + 5
+                drop_row = max(0, int(drop_y / row_height))
+                cols = max(1, (self.width() - 40) // (icon_w + 10))
+                drop_col = max(0, min(int(drop_x / (icon_w + 10)), cols - 1))
+                
+                # Calculate insert position
+                drop_pos = drop_row * cols + drop_col
+                drop_pos = max(0, min(drop_pos, len(self.custom_order)))
+                
+                # Insert at calculated position
+                self.custom_order.insert(drop_pos, file_path)
+                
+                # Set flag to prevent auto-sort from overriding
+                self._user_dragged = True
                 self.order_changed.emit(self.fence_id, self.custom_order)
                 
-                # 设置为自定义排序模式，防止自动刷新时重新排序
+                # 设置为自定义排序模式
                 if self.sort_by != "custom":
                     self.sort_by = "custom"
-                    # 保存排序方式到配置，确保重启后保持自定义排序
                     self.sort_changed.emit(self.fence_id, self.sort_by, self.sort_order)
                 
                 self.reflow_layout()

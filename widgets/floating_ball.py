@@ -1,4 +1,4 @@
-import sys
+﻿import sys
 import os
 import logging
 from PyQt6.QtWidgets import QWidget, QMenu, QApplication

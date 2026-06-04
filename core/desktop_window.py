@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QWidget, QApplication, QVBoxLayout, QLabel
+﻿from PyQt6.QtWidgets import QWidget, QApplication, QVBoxLayout, QLabel
 from PyQt6.QtCore import Qt, QTimer
 from PyQt6.QtGui import QPainter, QColor
 import sys

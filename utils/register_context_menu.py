@@ -1,4 +1,4 @@
-import winreg
+﻿import winreg
 import sys
 import os
 import ctypes

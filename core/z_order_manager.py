@@ -1,4 +1,4 @@
-import logging
+﻿import logging
 
 import win32con
 import win32gui
