@@ -1,4 +1,4 @@
-﻿import os
+import os
 import sys
 import logging
 import win32gui
@@ -332,7 +332,7 @@ class FenceWidget(QWidget):
     font_size_changed = pyqtSignal(str, int) 
     sort_changed = pyqtSignal(str, str, str) # NEW Signal: id, sort_by, sort_order
 
-    def __init__(self, fence_id, title="New Fence", parent=None, opacity=0.1, view_mode="icon_medium", custom_order=None, font_size=12, sort_by="name", sort_order="asc"):
+    def __init__(self, fence_id, title="新分区", parent=None, opacity=0.1, view_mode="icon_medium", custom_order=None, font_size=12, sort_by="name", sort_order="asc"):
         super().__init__(parent)
         self.fence_id = fence_id
         self.title = title
@@ -412,7 +412,7 @@ class FenceWidget(QWidget):
 
         # Attach to desktop if no parent
         if not parent:
-# 暂时禁用桌面嵌入，避免Fence窗口消失的问题
+# 暂时禁用桌面嵌入，避免分区窗口消失的问题
             # QTimer.singleShot(500, self.attach_to_desktop)
             # QTimer.singleShot(2000, self.attach_to_desktop)
             # QTimer.singleShot(5000, self.attach_to_desktop)
@@ -442,7 +442,7 @@ class FenceWidget(QWidget):
             logging.error(f"Error checking attachment: {e}")
 
     def attach_to_desktop(self):
-        """将 Fence 窗口嵌入到 Windows 桌面层"""
+        """将分区窗口嵌入到 Windows 桌面层"""
         try:
             hwnd = int(self.winId())
             
@@ -555,7 +555,7 @@ class FenceWidget(QWidget):
                 logging.error(f"Failed to open folder: {e}")
                 QMessageBox.warning(self, "Error", f"Failed to open folder: {e}")
         else:
-            QMessageBox.information(self, "Info", "This fence does not have a linked folder.")
+            QMessageBox.information(self, "Info", "这个分区没有关联文件夹。")
 
     def refresh_files(self):
         if not self.current_path or not os.path.exists(self.current_path):
@@ -936,11 +936,11 @@ class FenceWidget(QWidget):
         
         menu.addSeparator()
         
-        rename_action = QAction("Rename Fence", self)
+        rename_action = QAction("重命名分区", self)
         rename_action.triggered.connect(self.rename_fence)
         menu.addAction(rename_action)
         
-        remove_action = QAction("Remove Fence", self)
+        remove_action = QAction("删除分区", self)
         remove_action.triggered.connect(self.remove_fence)
         menu.addAction(remove_action)
         
@@ -978,7 +978,7 @@ class FenceWidget(QWidget):
     def rename_fence(self):
         # Use QInputDialog instance to style it properly
         dialog = QInputDialog(self)
-        dialog.setWindowTitle("Rename Fence")
+        dialog.setWindowTitle("重命名分区")
         dialog.setLabelText("New Name:")
         dialog.setTextValue(self.title)
         # Force light theme for readability
@@ -998,7 +998,7 @@ class FenceWidget(QWidget):
             self.fence_renamed.emit(self.fence_id, new_title)
 
     def remove_fence(self):
-        confirm = QMessageBox.question(self, "Remove Fence", "Are you sure? Files will remain in their folder.",
+        confirm = QMessageBox.question(self, "删除分区", "确定删除这个分区吗？文件会保留在原文件夹中。",
                                      QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
         if confirm == QMessageBox.StandardButton.Yes:
             self.fence_removed.emit(self.fence_id)

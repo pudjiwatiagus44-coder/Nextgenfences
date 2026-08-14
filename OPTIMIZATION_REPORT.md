@@ -4,7 +4,7 @@
 2026-02-09
 
 ## 优化目标
-1. 解决 Win+D 后 Fence 窗口隐藏的问题
+1. 解决 Win+D 后 分区 窗口隐藏的问题
 2. 提高应用启动速度
 3. 降低运行时 CPU 占用
 
@@ -13,7 +13,7 @@
 ## 1. Win+D 隐藏问题解决方案
 
 ### 问题描述
-当用户按下 Win+D 显示桌面时，Fence 窗口会被 Windows 隐藏，无法保持在桌面上显示。
+当用户按下 Win+D 显示桌面时，分区 窗口会被 Windows 隐藏，无法保持在桌面上显示。
 
 ### 解决方案演进
 
@@ -67,7 +67,7 @@
 def kill_old_instances():
     # 使用 Popen 非阻塞执行，不等待结果
     subprocess.Popen(
-        f'taskkill /F /FI "PID ne {current_pid}" /IM NextGenFences.exe', 
+        f'taskkill /F /FI "PID ne {current_pid}" /IM 桌面分区.exe', 
         shell=True, 
         stdout=subprocess.DEVNULL, 
         stderr=subprocess.DEVNULL
@@ -75,7 +75,7 @@ def kill_old_instances():
 ```
 - **效果**：启动时不再等待旧进程清理完成，节省 ~500ms
 
-#### 2.2 延迟加载 Fence 窗口
+#### 2.2 延迟加载 分区 窗口
 ```python
 def load_fences(self):
     for i, f_conf in enumerate(fences_data):
@@ -139,7 +139,7 @@ python test_desktop_hook.py
 ```bash
 python main.py
 ```
-或使用已编译的 `NextGenFences.exe`
+或使用已编译的 `桌面分区.exe`
 
 ---
 
@@ -152,7 +152,7 @@ python main.py
 - **缺点**：实现复杂，需要处理 Windows 消息循环
 
 ### 5.2 嵌入到 WorkerW 窗口（实验性）
-- 将 Fence 窗口作为 WorkerW 的子窗口
+- 将 分区 窗口作为 WorkerW 的子窗口
 - **优点**：完全不受 Win+D 影响
 - **缺点**：
   - 壁纸更换后需要重新查找 WorkerW
@@ -169,13 +169,13 @@ python main.py
 ## 6. 已知问题
 
 ### 6.1 响应延迟
-- **现象**：按下 Win+D 后，Fence 窗口恢复有 ~250ms 延迟
+- **现象**：按下 Win+D 后，分区 窗口恢复有 ~250ms 延迟
 - **原因**：500ms 检查间隔 + 窗口恢复时间
 - **影响**：轻微，用户基本无感知
 - **解决**：如需更快响应，可降低检查间隔至 300ms（会增加 CPU 占用）
 
 ### 6.2 壁纸更换
-- **现象**：更换壁纸后，Fence 窗口可能短暂消失
+- **现象**：更换壁纸后，分区 窗口可能短暂消失
 - **原因**：Windows 重建桌面窗口
 - **解决**：`check_attachment()` 方法会在 10 秒内自动恢复
 
@@ -192,10 +192,10 @@ python main.py
 ### 性能测试命令
 ```bash
 # 监控 CPU 和内存
-Get-Process NextGenFences | Select-Object CPU, WS
+Get-Process 桌面分区 | Select-Object CPU, WS
 
 # 测试启动时间
-Measure-Command { Start-Process NextGenFences.exe }
+Measure-Command { Start-Process 桌面分区.exe }
 ```
 
 ---

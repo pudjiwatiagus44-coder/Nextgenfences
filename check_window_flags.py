@@ -1,5 +1,5 @@
 """
-检查当前 Fence 窗口的窗口标志
+检查当前 分区 窗口的窗口标志
 """
 import win32gui
 import win32con
@@ -28,7 +28,7 @@ def get_window_flags(hwnd):
         return {'error': str(e)}
 
 print("=" * 70)
-print("Fence 窗口标志检查")
+print("分区 窗口标志检查")
 print("=" * 70)
 
 # 查找所有可见的 Qt 窗口

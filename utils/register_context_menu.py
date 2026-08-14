@@ -35,7 +35,7 @@ def register():
         # Create Key
         print(f"Creating Registry Key: HKCR\\{key_path}")
         key = winreg.CreateKey(winreg.HKEY_CLASSES_ROOT, key_path)
-        winreg.SetValue(key, "", winreg.REG_SZ, "Create New Fence")
+        winreg.SetValue(key, "", winreg.REG_SZ, "新建分区")
         
         # Optional: Icon
         # winreg.SetValueEx(key, "Icon", 0, winreg.REG_SZ, "shell32.dll,3") 
@@ -48,7 +48,7 @@ def register():
         winreg.CloseKey(key)
         
         print("Successfully registered context menu!")
-        # ctypes.windll.user32.MessageBoxW(0, "Context Menu 'Create New Fence' added successfully!", "Success", 0)
+        # ctypes.windll.user32.MessageBoxW(0, "Context Menu '新建分区' added successfully!", "Success", 0)
         
     except Exception as e:
         print(f"Error: {e}")

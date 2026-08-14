@@ -1,4 +1,4 @@
-﻿import sys
+import sys
 import os
 import logging
 from PyQt6.QtWidgets import QWidget, QMenu, QApplication
@@ -224,11 +224,11 @@ class FloatingBallWidget(QWidget):
     def contextMenuEvent(self, event):
         menu = QMenu(self)
         
-        new_fence_action = QAction("New Fence (Default)", self)
+        new_fence_action = QAction("新建分区（默认目录）", self)
         new_fence_action.triggered.connect(self.create_fence_requested.emit)
         menu.addAction(new_fence_action)
         
-        custom_fence_action = QAction("新建指定目录Fence", self)
+        custom_fence_action = QAction("新建指定目录分区", self)
         custom_fence_action.triggered.connect(self.create_custom_fence_requested.emit)
         menu.addAction(custom_fence_action)
 

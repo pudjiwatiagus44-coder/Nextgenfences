@@ -9,10 +9,10 @@ import win32con
 print("=" * 60)
 print("Win+D 恢复测试")
 print("=" * 60)
-print("正在查找 Fence 窗口...")
+print("正在查找 分区 窗口...")
 
 def find_qt_windows():
-    """查找所有 Qt 窗口（Fence 使用 Qt）"""
+    """查找所有 Qt 窗口（分区 使用 Qt）"""
     windows = []
     
     def callback(hwnd, extra):

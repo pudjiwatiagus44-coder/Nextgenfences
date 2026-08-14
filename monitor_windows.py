@@ -6,15 +6,15 @@ import win32gui
 import win32con
 
 def find_fence_windows():
-    """查找所有 Fence 窗口"""
+    """查找所有 分区 窗口"""
     fences = []
     
     def callback(hwnd, extra):
         if win32gui.IsWindow(hwnd):
             title = win32gui.GetWindowText(hwnd)
             class_name = win32gui.GetClassName(hwnd)
-            # 查找 Qt 窗口（Fence 使用 Qt）
-            if 'Qt' in class_name or 'Fence' in title:
+            # 查找 Qt 窗口（分区 使用 Qt）
+            if 'Qt' in class_name or '分区' in title:
                 fences.append((hwnd, title, class_name))
         return True
     
@@ -24,10 +24,10 @@ def find_fence_windows():
 print("=" * 60)
 print("Win+D 恢复监控")
 print("=" * 60)
-print("正在查找 Fence 窗口...")
+print("正在查找 分区 窗口...")
 
 fences = find_fence_windows()
-print(f"\n找到 {len(fences)} 个可能的 Fence 窗口：")
+print(f"\n找到 {len(fences)} 个可能的 分区 窗口：")
 for hwnd, title, class_name in fences:
     is_visible = win32gui.IsWindowVisible(hwnd)
     print(f"  - HWND: {hwnd}, Title: '{title}', Class: '{class_name}', Visible: {is_visible}")

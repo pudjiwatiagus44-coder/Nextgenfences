@@ -22,14 +22,14 @@ print("=" * 70)
 print("Win+D 窗口状态详细诊断")
 print("=" * 70)
 
-# 查找 Fence 窗口
+# 查找 分区 窗口
 def find_fence_windows():
     windows = []
     def callback(hwnd, extra):
         if win32gui.IsWindow(hwnd):
             title = win32gui.GetWindowText(hwnd)
             class_name = win32gui.GetClassName(hwnd)
-            # 查找可能是 Fence 的窗口
+            # 查找可能是 分区 的窗口
             if 'Qt' in class_name and win32gui.IsWindowVisible(hwnd):
                 parent = win32gui.GetParent(hwnd)
                 windows.append((hwnd, title, class_name, parent))
@@ -54,8 +54,8 @@ for hwnd, title, class_name, parent in fences:
 if not fences:
     print("\n⚠️  没有找到可见的 Qt 窗口！")
     print("可能的原因：")
-    print("1. Fence 窗口已经被隐藏")
-    print("2. Fence 窗口使用了特殊的窗口类名")
+    print("1. 分区 窗口已经被隐藏")
+    print("2. 分区 窗口使用了特殊的窗口类名")
     print("3. 应用没有正常运行")
     input("\n按回车键退出...")
     exit(1)

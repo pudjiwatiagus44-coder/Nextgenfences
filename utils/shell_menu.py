@@ -79,7 +79,7 @@ class ShellContextMenu:
             
             # Insert Custom Rename Item at the top
             # ID: 10001
-            win32gui.InsertMenu(hmenu, 0, win32con.MF_BYPOSITION | win32con.MF_STRING, 10001, "Rename (Fence)")
+            win32gui.InsertMenu(hmenu, 0, win32con.MF_BYPOSITION | win32con.MF_STRING, 10001, "重命名（分区）")
             win32gui.InsertMenu(hmenu, 1, win32con.MF_BYPOSITION | win32con.MF_SEPARATOR, 0, None)
             
         except Exception as e:

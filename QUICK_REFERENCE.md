@@ -29,7 +29,7 @@ MyDesktop/
 │   ├── desktop_hook.py              # 🆕 桌面事件监听器（信号驱动）
 │   └── z_order_manager.py           # 窗口层级管理
 ├── widgets/
-│   ├── fence.py                     # Fence 窗口组件
+│   ├── fence.py                     # 分区 窗口组件
 │   ├── floating_ball.py             # 浮动球组件
 │   └── ...
 ├── managers/
@@ -54,7 +54,7 @@ MyDesktop/
 
 ### 2. 快速启动
 - **异步清理**：非阻塞杀死旧进程
-- **延迟加载**：每个 Fence 间隔 100ms 加载
+- **延迟加载**：每个 分区 间隔 100ms 加载
 - **启动时间**：~500ms（首个窗口）
 
 ### 3. 单实例运行
@@ -77,7 +77,7 @@ self.desktop_hook.start(interval_ms=500)  # 默认 500ms
 - 平衡模式：500ms（默认）
 - 快速响应：300ms
 
-### 调整 Fence 加载延迟
+### 调整 分区 加载延迟
 在 `main.py` 第 284 行：
 ```python
 delay = 100 * i  # 默认 100ms
@@ -89,13 +89,13 @@ delay = 100 * i  # 默认 100ms
 
 ### 基础功能测试
 - [ ] 应用正常启动
-- [ ] Fence 窗口正确显示
+- [ ] 分区 窗口正确显示
 - [ ] 文件拖放正常工作
 - [ ] 右键菜单正常显示
 
 ### Win+D 测试
 - [ ] 按 Win+D 显示桌面
-- [ ] Fence 窗口在 ~250ms 内恢复
+- [ ] 分区 窗口在 ~250ms 内恢复
 - [ ] 日志中有 "Desktop shown event received" 记录
 - [ ] 再次按 Win+D，窗口再次恢复
 
@@ -120,7 +120,7 @@ delay = 100 * i  # 默认 100ms
 
 ### 启动性能
 - 首个窗口：~500ms
-- 全部加载：~2000ms（6 个 Fence）
+- 全部加载：~2000ms（6 个 分区）
 
 ### Win+D 响应
 - 检测延迟：0-500ms（平均 250ms）
@@ -131,7 +131,7 @@ delay = 100 * i  # 默认 100ms
 
 ## 🐛 故障排查
 
-### Fence 窗口不显示
+### 分区 窗口不显示
 1. 检查日志：`app_debug.log`
 2. 确认配置文件：`nextgen_config.json`
 3. 尝试删除配置文件重新启动
@@ -144,7 +144,7 @@ delay = 100 * i  # 默认 100ms
 ### 启动缓慢
 1. 检查是否有多个实例在运行
 2. 查看日志中的加载时间
-3. 尝试减少 Fence 数量
+3. 尝试减少 分区 数量
 
 ### CPU 占用过高
 1. 检查检查间隔设置（默认 500ms）
@@ -159,7 +159,7 @@ delay = 100 * i  # 默认 100ms
 ```
 App initializing...
 Desktop initialized with signal-based desktop hook
-Fence xxx successfully embedded to desktop
+分区 xxx successfully embedded to desktop
 App running...
 ```
 
@@ -202,8 +202,8 @@ A: 复制 `nextgen_config.json` 文件即可。
 ## 🎯 最佳实践
 
 ### 性能优化
-1. 保持 Fence 数量在 10 个以内
-2. 避免在 Fence 中放置大量文件（> 100 个）
+1. 保持 分区 数量在 10 个以内
+2. 避免在 分区 中放置大量文件（> 100 个）
 3. 定期清理日志文件
 
 ### 稳定性

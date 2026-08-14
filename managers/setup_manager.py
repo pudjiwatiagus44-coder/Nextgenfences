@@ -1,11 +1,11 @@
-﻿import os
+import os
 import sys
 import winreg
 import ctypes
 from win32com.client import Dispatch
 
 class SetupManager:
-    APP_NAME = "NextGenFences"
+    APP_NAME = "桌面分区"
     
     def __init__(self):
         if getattr(sys, 'frozen', False):
@@ -60,13 +60,13 @@ class SetupManager:
                 print(f"Error removing key {key_path}: {e}")
 
     def install_context_menu(self):
-        """Adds 'New Fence' and 'New Custom Fence' to Desktop Right-Click Menu"""
+        """Adds partition actions to the desktop right-click menu."""
         self.remove_old_keys()
         try:
-            # 1. Standard "New Fence"
+            # 1. Standard partition
             user_key_path = r"Software\Classes\Directory\Background\shell\NextGenFences"
             key = winreg.CreateKey(winreg.HKEY_CURRENT_USER, user_key_path)
-            winreg.SetValue(key, "", winreg.REG_SZ, "New Fence")
+            winreg.SetValue(key, "", winreg.REG_SZ, "新建分区")
             winreg.SetValueEx(key, "Icon", 0, winreg.REG_SZ, self.exe_path)
             
             cmd_key = winreg.CreateKey(key, "command")
@@ -74,10 +74,10 @@ class SetupManager:
             winreg.CloseKey(cmd_key)
             winreg.CloseKey(key)
 
-            # 2. Custom Path Fence
+            # 2. Custom path partition
             user_key_path_custom = r"Software\Classes\Directory\Background\shell\NextGenFencesCustom"
             key_custom = winreg.CreateKey(winreg.HKEY_CURRENT_USER, user_key_path_custom)
-            winreg.SetValue(key_custom, "", winreg.REG_SZ, "新建指定目录Fence")
+            winreg.SetValue(key_custom, "", winreg.REG_SZ, "新建指定目录分区")
             winreg.SetValueEx(key_custom, "Icon", 0, winreg.REG_SZ, self.exe_path)
             
             cmd_key_custom = winreg.CreateKey(key_custom, "command")
@@ -100,7 +100,7 @@ class SetupManager:
             shortcut = shell.CreateShortCut(shortcut_path)
             shortcut.TargetPath = self.exe_path
             shortcut.WorkingDirectory = os.path.dirname(self.exe_path)
-            shortcut.Description = "NextGen Desktop Fences"
+            shortcut.Description = "桌面分区"
             shortcut.IconLocation = self.exe_path
             shortcut.Save()
             return True
@@ -118,7 +118,7 @@ class SetupManager:
             shortcut = shell.CreateShortCut(shortcut_path)
             shortcut.TargetPath = self.exe_path
             shortcut.WorkingDirectory = os.path.dirname(self.exe_path)
-            shortcut.Description = "NextGen Desktop Fences"
+            shortcut.Description = "桌面分区"
             shortcut.IconLocation = self.exe_path
             shortcut.Save()
             return True
@@ -135,20 +135,22 @@ class SetupManager:
         # 2. Remove Startup Shortcut
         try:
             startup_dir = os.path.join(os.getenv('APPDATA'), r'Microsoft\Windows\Start Menu\Programs\Startup')
-            shortcut_path = os.path.join(startup_dir, f"{self.APP_NAME}.lnk")
-            if os.path.exists(shortcut_path):
-                os.remove(shortcut_path)
-                print("Removed startup shortcut")
+            for shortcut_name in (f"{self.APP_NAME}.lnk", "NextGenFences.lnk"):
+                shortcut_path = os.path.join(startup_dir, shortcut_name)
+                if os.path.exists(shortcut_path):
+                    os.remove(shortcut_path)
+                    print("Removed startup shortcut")
         except Exception as e:
             print(f"Error removing startup shortcut: {e}")
 
         # 3. Remove Desktop Shortcut
         try:
             desktop_dir = os.path.join(os.path.expanduser("~"), "Desktop")
-            shortcut_path = os.path.join(desktop_dir, f"{self.APP_NAME}.lnk")
-            if os.path.exists(shortcut_path):
-                os.remove(shortcut_path)
-                print("Removed desktop shortcut")
+            for shortcut_name in (f"{self.APP_NAME}.lnk", "NextGenFences.lnk"):
+                shortcut_path = os.path.join(desktop_dir, shortcut_name)
+                if os.path.exists(shortcut_path):
+                    os.remove(shortcut_path)
+                    print("Removed desktop shortcut")
         except Exception as e:
             print(f"Error removing desktop shortcut: {e}")
             
