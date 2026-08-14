@@ -67,6 +67,7 @@ class DesktopHook(QObject):
 
     desktop_shown = pyqtSignal()
     desktop_hidden = pyqtSignal()
+    order_violated = pyqtSignal()
 
     def __init__(self):
         super().__init__()
@@ -81,6 +82,10 @@ class DesktopHook(QObject):
         self._desktop_view_hwnd = 0
         self._was_covered = False         # desktop layer above a fence?
         self._last_cover_emit_ts = 0      # cooldown for repeat emits while covered
+
+        # Desktop-widget invariant: no normal app window below any fence.
+        self._was_violation = False
+        self._last_violation_emit_ts = 0
 
         # Polling timer
         self._check_timer = QTimer()
@@ -201,7 +206,23 @@ class DesktopHook(QObject):
         self._desktop_view_hwnd = found[0]
         return self._desktop_view_hwnd
 
-    def _desktop_covers_fence(self) -> bool:
+    # classes that live at/near the desktop layer and never count as
+    # "application windows" for the z-order invariant
+    _SKIP_CLASSES = {
+        "Progman", "WorkerW", "Shell_TrayWnd", "Shell_SecondaryTrayWnd",
+        "Button", "SysListView64", "SHELLDLL_DefView",
+    }
+
+    def _zorder_snapshot(self) -> list[int]:
+        """Top-level windows in z-order (index 0 = topmost)."""
+        order: list[int] = []
+        try:
+            win32gui.EnumWindows(lambda h, _: (order.append(h), True)[1], None)
+        except Exception as e:
+            logger.debug(f"EnumWindows failed in z-order snapshot: {e}")
+        return order
+
+    def _desktop_covers_fence(self, order: list[int] | None = None) -> bool:
         """True if the desktop view window sits ABOVE any fence in z-order.
 
         This is the *ground truth* for "Show Desktop covered the fences":
@@ -213,12 +234,7 @@ class DesktopHook(QObject):
         desk = self._find_desktop_view()
         if not desk:
             return False
-        order: list[int] = []
-        try:
-            win32gui.EnumWindows(lambda h, _: (order.append(h), True)[1], None)
-        except Exception as e:
-            logger.debug(f"EnumWindows failed in z-order check: {e}")
-            return False
+        order = order if order is not None else self._zorder_snapshot()
         try:
             desk_idx = order.index(desk)
         except ValueError:
@@ -231,14 +247,48 @@ class DesktopHook(QObject):
                 continue
         return False
 
+    def _app_window_below_fence(self, order: list[int]) -> bool:
+        """Desktop-widget invariant check: every visible, non-minimised normal
+        application window must sit ABOVE all fences.
+
+        After "Show Desktop" is toggled back, Windows restores windows to
+        their old z-order slot which may be *below* the fences we re-anchored
+        during the show-desktop phase.  Detect that so main.py can push the
+        fences back down to the desktop layer.
+        """
+        if not self._fence_hwnds or not order:
+            return False
+        fence_idx = {h: i for i, h in enumerate(order) if h in self._fence_hwnds}
+        if not fence_idx:
+            return False
+        top_fence = min(fence_idx.values())   # smallest index = topmost fence
+        for i, h in enumerate(order):
+            if i <= top_fence or h in self._fence_hwnds:
+                continue
+            try:
+                if win32gui.GetClassName(h) in self._SKIP_CLASSES:
+                    continue
+                if not win32gui.IsWindowVisible(h) or win32gui.IsIconic(h):
+                    continue
+                l, t, r, b = win32gui.GetWindowRect(h)
+                if r - l <= 1 or b - t <= 1:
+                    continue   # zero-size helper windows
+                return True    # a live app window sits below our fences
+            except Exception:
+                continue
+        return False
+
     def _check_fence_visibility(self):
-        """Poll: fence hidden/minimised OR desktop layer raised above fences."""
+        """Poll: fence hidden/minimised, desktop layer raised above fences,
+        or app windows below fences (z-order invariant)."""
         try:
+            order = self._zorder_snapshot()
+            now_ms = int(time.monotonic() * 1000)
+
             # 1) z-order check – catches "Show Desktop" even when no windows
             #    were minimised (burst detection blind spot).
-            covered = self._desktop_covers_fence()
+            covered = self._desktop_covers_fence(order)
             if covered:
-                now_ms = int(time.monotonic() * 1000)
                 if not self._was_covered:
                     logger.info("Desktop layer raised above fences (z-order poll)")
                 if not self._was_covered or now_ms - self._last_cover_emit_ts >= 1000:
@@ -248,7 +298,20 @@ class DesktopHook(QObject):
             else:
                 self._was_covered = False
 
-            # 2) classic visibility check – catches SW_HIDE / direct minimise.
+            # 2) desktop-widget invariant – app windows must be above fences.
+            #    Fires after "Show Desktop" is toggled back, when Windows puts
+            #    restored windows below the fences we raised earlier.
+            if not covered and self._app_window_below_fence(order):
+                if not self._was_violation:
+                    logger.info("App window below fences (z-order invariant poll)")
+                if not self._was_violation or now_ms - self._last_violation_emit_ts >= 1000:
+                    self._last_violation_emit_ts = now_ms
+                    self.order_violated.emit()
+                self._was_violation = True
+            else:
+                self._was_violation = False
+
+            # 3) classic visibility check – catches SW_HIDE / direct minimise.
             any_hidden = False
             for hwnd in self._fence_hwnds:
                 try:
