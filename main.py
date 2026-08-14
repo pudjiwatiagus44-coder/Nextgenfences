@@ -20,6 +20,16 @@ from widgets.fence import FenceWidget
 from widgets.floating_ball import FloatingBallWidget
 
 try:
+    from core.desktop_hook import DesktopHook
+except Exception:
+    class DesktopHook:
+        def __init__(self):
+            self.desktop_shown = None
+
+        def start(self, _interval_ms):
+            return None
+
+try:
     from core.keyboard_hook import GlobalKeyboardHook
 except Exception:
     class GlobalKeyboardHook:
@@ -140,6 +150,7 @@ class NextGenDesktopApp:
         self.health_timer = QTimer()
         self.health_timer.timeout.connect(self.check_fences_health)
         self.health_timer.start(10000)
+        self.start_desktop_hook()
 
         QTimer.singleShot(1500, self.restore_all_fences)
         QTimer.singleShot(5000, self.restore_all_fences)
@@ -295,6 +306,20 @@ class NextGenDesktopApp:
             except Exception as e:
                 logging.error(f"Failed to restore fence {fence_id}: {e}")
 
+    def start_desktop_hook(self):
+        self.desktop_hook = DesktopHook()
+        if getattr(self.desktop_hook, "desktop_shown", None):
+            self.desktop_hook.desktop_shown.connect(self.restore_after_system_show_desktop)
+        self.desktop_hook.start(300)
+        # Sync current fence HWNDs to the hook so it knows which windows to watch
+        self._sync_fence_hwnds_to_hook()
+
+    def restore_after_system_show_desktop(self):
+        logging.info("System show desktop detected; scheduling partition restore")
+        # Immediate + staggered restores to handle Win+D / Show Desktop animation
+        for delay_ms in (0, 150, 400, 800):
+            QTimer.singleShot(delay_ms, self.restore_all_fences)
+
     def check_fences_health(self):
         recreate_ids = []
         for fence_id, fence in list(self.fences.items()):
@@ -419,7 +444,24 @@ class NextGenDesktopApp:
             except Exception:
                 pass
         GlobalKeyboardHook.set_fence_hwnds(hwnds)
+        # Keep the desktop hook in sync so it knows which windows to watch
+        if hasattr(self, "desktop_hook") and self.desktop_hook:
+            if hasattr(self.desktop_hook, "set_fence_hwnds"):
+                self.desktop_hook.set_fence_hwnds(hwnds)
         logging.info(f"Updated fence HWNDs for keyboard hook: {hwnds}")
+
+    def _sync_fence_hwnds_to_hook(self):
+        """Push current fence HWNDs to the desktop hook (called after hook starts)."""
+        if not hasattr(self, "desktop_hook") or not self.desktop_hook:
+            return
+        hwnds = []
+        for fence in self.fences.values():
+            try:
+                hwnds.append(int(fence.winId()))
+            except Exception:
+                pass
+        if hasattr(self.desktop_hook, "set_fence_hwnds"):
+            self.desktop_hook.set_fence_hwnds(hwnds)
 
     @staticmethod
     def _new_light_input_dialog(title, label, value=""):

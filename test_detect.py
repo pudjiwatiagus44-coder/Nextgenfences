@@ -1,4 +1,4 @@
-"""测试桌面检测逻辑"""
+﻿"""测试桌面检测逻辑"""
 import win32gui
 import time
 

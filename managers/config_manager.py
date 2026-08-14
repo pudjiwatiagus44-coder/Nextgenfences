@@ -1,4 +1,4 @@
-﻿import json
+import json
 import os
 import shutil
 import sys
@@ -28,7 +28,7 @@ class ConfigManager:
     def load_config(self):
         if os.path.exists(self.config_path):
             try:
-                with open(self.config_path, 'r', encoding='utf-8') as f:
+                with open(self.config_path, 'r', encoding='utf-8-sig') as f:
                     data = json.load(f)
                     
                     # Ensure root_dir is in data if present, otherwise we handle it in __init__

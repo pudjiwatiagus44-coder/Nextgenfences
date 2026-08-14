@@ -1,4 +1,4 @@
-import sys
+﻿import sys
 from PyQt6.QtWidgets import QApplication, QLabel, QWidget
 from PyQt6.QtCore import Qt
 import win32gui, win32con

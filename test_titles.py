@@ -1,4 +1,4 @@
-import win32gui
+﻿import win32gui
 with open('out_utf8_2.txt', 'w', encoding='utf-8') as f:
     hwnds = []
     win32gui.EnumWindows(lambda h, _: hwnds.append(h), None)

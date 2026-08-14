@@ -1,6 +1,7 @@
 import os
 import sys
 import logging
+import ctypes
 import win32gui
 import win32con
 from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QLabel, QApplication, 
@@ -13,6 +14,32 @@ from PyQt6.QtGui import QIcon, QPixmap, QDrag, QAction, QCursor, QDesktopService
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 from utils.shell_menu import ShellContextMenu
 from core.z_order_manager import ZOrderManager
+from utils.window_markers import mark_partition_window, unmark_partition_window
+
+SW_SHOWNORMAL = 1
+
+
+def _shell_execute(path, working_dir):
+    return ctypes.windll.shell32.ShellExecuteW(
+        None,
+        "open",
+        path,
+        None,
+        working_dir,
+        SW_SHOWNORMAL,
+    )
+
+
+def open_path(path):
+    if not os.path.exists(path):
+        raise FileNotFoundError(path)
+
+    working_dir = path if os.path.isdir(path) else os.path.dirname(path)
+    result = _shell_execute(path, working_dir or None)
+    if int(result) <= 32:
+        raise OSError(f"ShellExecuteW failed with code {int(result)}")
+
+    return result
 
 try:
     from send2trash import send2trash
@@ -141,9 +168,10 @@ class IconWidget(QWidget):
         if event.button() == Qt.MouseButton.LeftButton:
             logging.info(f"Opening file: {self.file_path}")
             try:
-                os.startfile(self.file_path)
+                open_path(self.file_path)
             except Exception as e:
                 logging.error(f"Failed to open {self.file_path}: {e}")
+                QMessageBox.warning(self, "打开失败", f"无法打开:\n{self.file_path}\n\n{e}")
 
     def contextMenuEvent(self, event):
         # Select on right click too
@@ -175,7 +203,7 @@ class IconWidget(QWidget):
         menu = QMenu(self)
         
         open_action = QAction("Open", self)
-        open_action.triggered.connect(lambda: os.startfile(self.file_path))
+        open_action.triggered.connect(self.open_item)
         menu.addAction(open_action)
         
         # Simulate 'Properties' - just show info
@@ -202,9 +230,17 @@ class IconWidget(QWidget):
         
         menu.exec(event.globalPos())
 
+    def open_item(self):
+        logging.info(f"Opening file: {self.file_path}")
+        try:
+            open_path(self.file_path)
+        except Exception as e:
+            logging.error(f"Failed to open {self.file_path}: {e}")
+            QMessageBox.warning(self, "打开失败", f"无法打开:\n{self.file_path}\n\n{e}")
+
     def open_folder(self):
         if self.current_path and os.path.exists(self.current_path):
-            os.startfile(self.current_path)
+            open_path(self.current_path)
 
     def set_sort(self, sort_by):
         self.sort_by = sort_by
@@ -424,6 +460,7 @@ class FenceWidget(QWidget):
         """定期检查嵌入状态，确保窗口仍然附着在桌面层"""
         try:
             hwnd = int(self.winId())
+            mark_partition_window(hwnd)
             if not win32gui.IsWindow(hwnd):
                 # 窗口已被销毁，停止定时器
                 if hasattr(self, 'attachment_timer'):
@@ -445,6 +482,7 @@ class FenceWidget(QWidget):
         """将分区窗口嵌入到 Windows 桌面层"""
         try:
             hwnd = int(self.winId())
+            mark_partition_window(hwnd)
             
             # 调用 ZOrderManager 进行嵌入
             success = ZOrderManager.embed_to_desktop(hwnd)
@@ -473,6 +511,14 @@ class FenceWidget(QWidget):
                 
         except Exception as e:
             logging.error(f"Failed to attach fence {self.fence_id} to desktop: {e}")
+
+    def showEvent(self, event):
+        super().showEvent(event)
+        mark_partition_window(int(self.winId()))
+
+    def closeEvent(self, event):
+        unmark_partition_window(int(self.winId()))
+        super().closeEvent(event)
     
     def recover_after_show_desktop(self):
         """Restore the fence after Win+D or the taskbar Show Desktop button."""
@@ -550,7 +596,7 @@ class FenceWidget(QWidget):
     def open_folder(self):
         if self.current_path and os.path.exists(self.current_path):
             try:
-                os.startfile(self.current_path)
+                open_path(self.current_path)
             except Exception as e:
                 logging.error(f"Failed to open folder: {e}")
                 QMessageBox.warning(self, "Error", f"Failed to open folder: {e}")

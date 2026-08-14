@@ -1,4 +1,4 @@
-import win32gui
+﻿import win32gui
 hwnds = []
 def f(h, _):
     hwnds.append(h)

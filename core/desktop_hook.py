@@ -1,110 +1,281 @@
-﻿"""
-Windows 妗岄潰鏄剧ず/闅愯棌浜嬩欢鐩戝惉鍣?
-"""
-import logging
-import os
+"""Monitor desktop state and restore fences after Win+D / Show Desktop.
 
-import win32con
+This module replaces the old EnumWindows-based detection (which was unreliable
+and threw ``ERROR_PATH_NOT_FOUND`` during window enumeration).  The new approach
+uses two complementary mechanisms:
+
+1. **Global SetWinEventHook** – listens to minimise events across *all* processes.
+   When the user clicks the taskbar "Show Desktop" button, Windows minimises
+   many top-level windows in quick succession.  We detect that burst and emit
+   ``desktop_shown`` so main.py can restore fences.
+
+2. **Polling fallback** – every 300 ms, check whether any fence window is hidden
+   or minimised.  Catches cases the event hook misses (e.g. ``SW_HIDE`` instead
+   of minimise).
+
+Both mechanisms simply emit ``desktop_shown`` so that *main.py* can schedule a
+restore.
+"""
+
+import logging
+import time
+
+import ctypes
+import ctypes.wintypes
+
 import win32gui
-import win32process
-from PyQt6.QtCore import QObject, pyqtSignal, QTimer
+from PyQt6.QtCore import QObject, QTimer, pyqtSignal
 
 logger = logging.getLogger(__name__)
 
+# ── WinEvent constants ────────────────────────────────────────────────
+EVENT_SYSTEM_MINIMIZESTART = 0x0016  # a window is about to be minimised
+EVENT_SYSTEM_MINIMIZEEND = 0x0017
+WINEVENT_OUTOFCONTEXT = 0x0000       # events posted to our message queue
+
+# A "Show Desktop" action minimises several windows in a very short time.
+# We consider a burst of this many START events within the window as a trigger.
+_MINIMISE_BURST_COUNT = 2
+_MINIMISE_BURST_WINDOW_MS = 500
+
+WinEventProcType = ctypes.WINFUNCTYPE(
+    None,
+    ctypes.wintypes.HANDLE,   # hWinEventHook
+    ctypes.wintypes.DWORD,    # event
+    ctypes.wintypes.HWND,     # hwnd
+    ctypes.wintypes.LONG,     # idObject
+    ctypes.wintypes.LONG,     # idChild
+    ctypes.wintypes.DWORD,    # dwEventThread
+    ctypes.wintypes.DWORD,    # dwmsEventTime
+)
+
+_user32 = ctypes.windll.user32
+_user32.SetWinEventHook.restype = ctypes.wintypes.HANDLE
+_user32.UnhookWinEvent.argtypes = [ctypes.wintypes.HANDLE]
+
+
 class DesktopHook(QObject):
+    """Detect when the desktop is shown and emit ``desktop_shown``.
+
+    Public API::
+
+        hook = DesktopHook()
+        hook.desktop_shown.connect(callback)
+        hook.set_fence_hwnds([hwnd1, hwnd2, ...])
+        hook.start(interval_ms=300)
     """
-    鐩戝惉 Windows 妗岄潰鏄剧ず浜嬩欢锛圵in+D锛?
-    褰撴娴嬪埌妗岄潰鏄剧ず鏃讹紝鍙戝嚭淇″彿閫氱煡涓荤▼搴忔仮澶?Fence 绐楀彛
-    """
-    desktop_shown = pyqtSignal()  # 妗岄潰鏄剧ず淇″彿
-    desktop_hidden = pyqtSignal()  # 妗岄潰闅愯棌淇″彿
-    
+
+    desktop_shown = pyqtSignal()
+    desktop_hidden = pyqtSignal()
+
     def __init__(self):
         super().__init__()
-        self._last_desktop_state = False
+        self._fence_hwnds: set[int] = set()
+        self._was_hidden = False          # debounce flag for polling
+        self._last_restore_ts = 0         # simple cooldown (ms since epoch)
+
+        # Track recent minimise events for burst detection.
+        self._recent_minimise_ts: list[float] = []
+
+        # Desktop view window (WorkerW/Progman hosting SHELLDLL_DefView).
+        self._desktop_view_hwnd = 0
+        self._was_covered = False         # desktop layer above a fence?
+        self._last_cover_emit_ts = 0      # cooldown for repeat emits while covered
+
+        # Polling timer
         self._check_timer = QTimer()
-        self._check_timer.timeout.connect(self._check_desktop_state)
-        self._self_pid = os.getpid()
-        self._ignored_classes = {
-            "Progman",
-            "WorkerW",
-            "Shell_TrayWnd",
-            "Button",  # Start button
-            "Shell_SecondaryTrayWnd",
-        }        
-    def start(self, interval_ms=500):
-        logger.info(f"Starting desktop hook with {interval_ms}ms interval")
+        self._check_timer.timeout.connect(self._check_fence_visibility)
+
+        # WinEvent hook handle + callback reference (keep alive to prevent GC)
+        self._win_event_hook = None
+        self._callback_ref: WinEventProcType | None = None
+
+    # ── public ────────────────────────────────────────────────────────
+
+    def set_fence_hwnds(self, hwnds):
+        """Tell the hook which window handles belong to our fences."""
+        self._fence_hwnds = {int(h) for h in hwnds if h}
+        logger.info(f"Fence HWNDs updated: {sorted(self._fence_hwnds)}")
+
+    def start(self, interval_ms=300):
+        logger.info(f"Starting desktop hook ({interval_ms} ms polling [z-order+visibility] + global WinEvent)")
         self._check_timer.start(interval_ms)
-        
+        self._install_win_event_hook()
+
     def stop(self):
-        """鍋滄鐩戝惉"""
         logger.info("Stopping desktop hook")
         self._check_timer.stop()
-        
-    def _check_desktop_state(self):
-        """妫€鏌ユ闈㈡樉绀虹姸鎬?""
+        self._uninstall_win_event_hook()
+
+    # ── WinEvent hook (instant) ───────────────────────────────────────
+
+    def _install_win_event_hook(self):
+        """Register for minimise events across ALL processes.
+
+        The taskbar "Show Desktop" button minimises many top-level windows at
+        once.  Those events are generated by Windows/explorer, not by our own
+        process, so we must listen globally (idProcess=0).
+        """
         try:
-            is_visible = self._is_desktop_visible()
-            
-            # 鐘舵€佸彉鍖栨椂鍙戝嚭淇″彿
-            if is_visible != self._last_desktop_state:
-                if is_visible:
-                    logger.info("Desktop shown detected (Win+D pressed)")
-                    self.desktop_shown.emit()
-                else:
-                    logger.info("Desktop hidden detected")
-                    self.desktop_hidden.emit()
-                    
-                self._last_desktop_state = is_visible
-                
+            self._callback_ref = WinEventProcType(self._on_win_event)
+            self._win_event_hook = _user32.SetWinEventHook(
+                EVENT_SYSTEM_MINIMIZESTART,
+                EVENT_SYSTEM_MINIMIZESTART,
+                0,                  # hmodEventHook (0 for out-of-context)
+                self._callback_ref,
+                0,                  # idProcess – 0 means all processes
+                0,                  # idThread  – 0 means all threads
+                WINEVENT_OUTOFCONTEXT,
+            )
+            if self._win_event_hook:
+                logger.info("Global WinEvent hook installed for minimise events")
+            else:
+                logger.warning("SetWinEventHook returned 0 – relying on polling only")
         except Exception as e:
-            logger.error(f"Error checking desktop state: {e}")
-    
-    def _is_desktop_visible(self):
-        """Return True when no other process has a visible, non-minimized window."""
+            logger.warning(f"Failed to install WinEvent hook: {e}")
+
+    def _uninstall_win_event_hook(self):
+        if self._win_event_hook:
+            try:
+                _user32.UnhookWinEvent(self._win_event_hook)
+            except Exception:
+                pass
+            self._win_event_hook = None
+
+    def _on_win_event(self, hWinEventHook, event, hwnd, idObject, idChild,
+                      dwEventThread, dwmsEventTime):
+        """Called by Windows when a minimise event fires (via Qt message pump)."""
         try:
-            visible_found = False
+            if not hwnd or idObject != 0:       # only window objects
+                return
 
-            def enum_handler(hwnd, _):
-                nonlocal visible_found
-                if visible_found:
-                    return False
+            hwnd_int = int(hwnd)
 
-                if not win32gui.IsWindowVisible(hwnd):
-                    return True
+            # Fence windows are Qt Tool windows and usually don't generate
+            # MINIMIZESTART when "Show Desktop" is clicked; they are covered by
+            # the desktop layer instead.  Still handle the rare case where a
+            # fence is directly minimised.
+            if hwnd_int in self._fence_hwnds:
+                logger.info(f"WinEvent: fence hwnd {hwnd} minimise detected")
+                self._was_hidden = True
+                self._emit_shown()
+                return
 
-                if win32gui.IsIconic(hwnd):
-                    return True
+            # Global burst detection: many windows minimised at once means
+            # "Show Desktop" was triggered (taskbar button or Win+D path that
+            # slips past the keyboard hook).
+            now_ms = time.monotonic() * 1000
+            self._recent_minimise_ts.append(now_ms)
+            cutoff = now_ms - _MINIMISE_BURST_WINDOW_MS
+            self._recent_minimise_ts = [t for t in self._recent_minimise_ts if t >= cutoff]
 
-                class_name = win32gui.GetClassName(hwnd)
-                if class_name in self._ignored_classes:
-                    return True
-
-                try:
-                    left, top, right, bottom = win32gui.GetWindowRect(hwnd)
-                    if right - left == 0 or bottom - top == 0:
-                        return True
-                except win32gui.error:
-                    return True
-
-                try:
-                    _, pid = win32process.GetWindowThreadProcessId(hwnd)
-                except win32gui.error:
-                    return True
-
-                if pid == self._self_pid:
-                    return True
-
-                title = win32gui.GetWindowText(hwnd)
-                if title == "Program Manager":
-                    return True
-
-                visible_found = True
-                return False
-
-            win32gui.EnumWindows(enum_handler, None)
-            return not visible_found
-
+            if len(self._recent_minimise_ts) >= _MINIMISE_BURST_COUNT:
+                logger.info(
+                    f"Show Desktop burst detected: {len(self._recent_minimise_ts)} "
+                    f"minimise events in {_MINIMISE_BURST_WINDOW_MS} ms"
+                )
+                self._recent_minimise_ts.clear()
+                self._emit_shown()
         except Exception as e:
-            logger.error(f"Error in _is_desktop_visible: {e}")
+            logger.debug(f"WinEvent callback error: {e}")
+
+    # ── Polling fallback ─────────────────────────────────────────────
+
+    def _find_desktop_view(self) -> int:
+        """HWND of the desktop view window (WorkerW/Progman w/ SHELLDLL_DefView)."""
+        if self._desktop_view_hwnd and win32gui.IsWindow(self._desktop_view_hwnd):
+            return self._desktop_view_hwnd
+        found = [0]
+
+        def _cb(hwnd, _):
+            if win32gui.GetClassName(hwnd) in ("Progman", "WorkerW"):
+                if win32gui.FindWindowEx(hwnd, 0, "SHELLDLL_DefView", None):
+                    found[0] = hwnd
+                    return False  # stop enumeration
+            return True
+
+        try:
+            win32gui.EnumWindows(_cb, None)
+        except Exception:
+            pass
+        self._desktop_view_hwnd = found[0]
+        return self._desktop_view_hwnd
+
+    def _desktop_covers_fence(self) -> bool:
+        """True if the desktop view window sits ABOVE any fence in z-order.
+
+        This is the *ground truth* for "Show Desktop covered the fences":
+        the WorkerW gets raised above them while IsWindowVisible/IsIconic
+        stay unchanged.  Works no matter how many windows were minimised.
+        """
+        if not self._fence_hwnds:
             return False
+        desk = self._find_desktop_view()
+        if not desk:
+            return False
+        order: list[int] = []
+        try:
+            win32gui.EnumWindows(lambda h, _: (order.append(h), True)[1], None)
+        except Exception as e:
+            logger.debug(f"EnumWindows failed in z-order check: {e}")
+            return False
+        try:
+            desk_idx = order.index(desk)
+        except ValueError:
+            return False
+        for f in self._fence_hwnds:
+            try:
+                if order.index(f) > desk_idx:   # fence BELOW desktop → covered
+                    return True
+            except ValueError:
+                continue
+        return False
+
+    def _check_fence_visibility(self):
+        """Poll: fence hidden/minimised OR desktop layer raised above fences."""
+        try:
+            # 1) z-order check – catches "Show Desktop" even when no windows
+            #    were minimised (burst detection blind spot).
+            covered = self._desktop_covers_fence()
+            if covered:
+                now_ms = int(time.monotonic() * 1000)
+                if not self._was_covered:
+                    logger.info("Desktop layer raised above fences (z-order poll)")
+                if not self._was_covered or now_ms - self._last_cover_emit_ts >= 1000:
+                    self._last_cover_emit_ts = now_ms
+                    self._emit_shown()
+                self._was_covered = True
+            else:
+                self._was_covered = False
+
+            # 2) classic visibility check – catches SW_HIDE / direct minimise.
+            any_hidden = False
+            for hwnd in self._fence_hwnds:
+                try:
+                    if not win32gui.IsWindow(hwnd):
+                        continue
+                    if not win32gui.IsWindowVisible(hwnd) or win32gui.IsIconic(hwnd):
+                        any_hidden = True
+                        break
+                except Exception:
+                    continue
+
+            if any_hidden:
+                if not self._was_hidden:
+                    logger.info("Fence window hidden detected (polling)")
+                    self._emit_shown()
+                self._was_hidden = True
+            else:
+                self._was_hidden = False
+        except Exception as e:
+            logger.error(f"Error checking fence visibility: {e}")
+
+    # ── helpers ───────────────────────────────────────────────────────
+
+    def _emit_shown(self):
+        """Emit ``desktop_shown`` with a short cooldown to avoid spam."""
+        now_ms = int(time.monotonic() * 1000)
+        if now_ms - self._last_restore_ts < 200:
+            return
+        self._last_restore_ts = now_ms
+        self.desktop_shown.emit()

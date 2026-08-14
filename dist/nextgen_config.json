@@ -19,15 +19,17 @@
                 "C:\\Users\\Administrator\\Documents\\MyFences\\AI\\Antigravity (1).lnk",
                 "C:\\Users\\Administrator\\Documents\\MyFences\\AI\\CodeBuddy.lnk",
                 "C:\\Users\\Administrator\\Documents\\MyFences\\AI\\Cursor.lnk",
+                "C:\\Users\\Administrator\\Documents\\MyFences\\AI\\FlClash.lnk",
+                "C:\\Users\\Administrator\\Documents\\MyFences\\AI\\Hermes.lnk",
                 "C:\\Users\\Administrator\\Documents\\MyFences\\AI\\MiniMax Code.lnk",
                 "C:\\Users\\Administrator\\Documents\\MyFences\\AI\\NotebookLM.lnk",
                 "C:\\Users\\Administrator\\Documents\\MyFences\\AI\\Obsidian.lnk",
                 "C:\\Users\\Administrator\\Documents\\MyFences\\AI\\Oracle VirtualBox.lnk",
                 "C:\\Users\\Administrator\\Documents\\MyFences\\AI\\Trae CN.lnk",
                 "C:\\Users\\Administrator\\Documents\\MyFences\\AI\\Trae.lnk",
-                "C:\\Users\\Administrator\\Documents\\MyFences\\AI\\Visual Studio Code (1).lnk",
+                "C:\\Users\\Administrator\\Documents\\MyFences\\AI\\Visual Studio Code.lnk",
                 "C:\\Users\\Administrator\\Documents\\MyFences\\AI\\WorkBuddy.lnk",
-                "C:/Users/Administrator/Documents/MyFences/AI\\FlClash.lnk"
+                "C:/Users/Administrator/Documents/MyFences/AI\\ChatGPT.lnk"
             ],
             "font_size": 14
         },
@@ -147,7 +149,7 @@
                 2067,
                 105,
                 607,
-                160
+                359
             ],
             "opacity": 0.1,
             "view_mode": "icon_large",
@@ -157,14 +159,19 @@
             "custom_order": [
                 "C:\\Users\\Administrator\\Documents\\MyFences\\\u7d2b\u9e1f\u5b9a\u65f6\\\u5173\u5e7f\u544a.bat.lnk",
                 "C:\\Users\\Administrator\\Documents\\MyFences\\\u7d2b\u9e1f\u5b9a\u65f6\\\u5f00\u5e7f\u544a.bat.lnk",
-                "C:\\Users\\Administrator\\Documents\\MyFences\\\u7d2b\u9e1f\u5b9a\u65f6\\\u6253\u5f00VPN-vpn07\u5b89\u5168\u7248.bat",
+                "C:\\Users\\Administrator\\Documents\\MyFences\\\u7d2b\u9e1f\u5b9a\u65f6\\\u6253\u5f00VPN-\u5b89\u5168\u7248.bat",
                 "C:\\Users\\Administrator\\Documents\\MyFences\\\u7d2b\u9e1f\u5b9a\u65f6\\\u6e05\u7406VPN\u5e76\u6253\u5f00\u7d2b\u9e1f-\u514d\u91cd\u542f\u5b89\u5168\u7248.bat",
                 "C:\\Users\\Administrator\\Documents\\MyFences\\\u7d2b\u9e1f\u5b9a\u65f6\\\u7a0b\u5e8f\u4e3b\u9762\u677f.lnk",
                 "C:\\Users\\Administrator\\Documents\\MyFences\\\u7d2b\u9e1f\u5b9a\u65f6\\\u81ea\u52a8\u6253\u5f00\u7d2b\u9e1f (2)",
                 "C:\\Users\\Administrator\\Documents\\MyFences\\\u7d2b\u9e1f\u5b9a\u65f6\\close-floating-ball.ps1",
                 "C:\\Users\\Administrator\\Documents\\MyFences\\\u7d2b\u9e1f\u5b9a\u65f6\\FlClash-floating-ball.ps1",
                 "C:\\Users\\Administrator\\Documents\\MyFences\\\u7d2b\u9e1f\u5b9a\u65f6\\vpn07-floating-ball.ps1",
-                "C:\\Users\\Administrator\\Documents\\MyFences\\\u7d2b\u9e1f\u5b9a\u65f6\\\u65e7\u7248\u6e05\u7406\u8f6f\u4ef6"
+                "C:\\Users\\Administrator\\Documents\\MyFences\\\u7d2b\u9e1f\u5b9a\u65f6\\\u65e7\u7248\u6e05\u7406\u8f6f\u4ef6",
+                "C:\\Users\\Administrator\\Documents\\MyFences\\\u7d2b\u9e1f\u5b9a\u65f6\\\u7d2b\u9e1f\u5b9a\u65f6 (1)",
+                "C:\\Users\\Administrator\\Documents\\MyFences\\\u7d2b\u9e1f\u5b9a\u65f6\\\u70b9\u51fb\u6253\u5f00\u5e94\u7528\u5206\u4eab\u5305",
+                "C:\\Users\\Administrator\\Documents\\MyFences\\\u7d2b\u9e1f\u5b9a\u65f6\\\u4e3b\u9762\u677f\u5206\u4eab\u5305",
+                "C:\\Users\\Administrator\\Documents\\MyFences\\\u7d2b\u9e1f\u5b9a\u65f6\\\u5206\u4eab\u5305",
+                "C:\\Users\\Administrator\\Documents\\MyFences\\\u7d2b\u9e1f\u5b9a\u65f6\\clean-vpn-open-ziniao.log"
             ]
         }
     ],

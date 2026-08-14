@@ -13,3 +13,8 @@ Release_v1.0/
 # Logs
 *.log
 
+
+# Session/workspace data
+.workbuddy/
+skills/
+superpowers_skills/

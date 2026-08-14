@@ -1,4 +1,4 @@
-"""
+﻿"""
 手动移除所有 Qt 窗口的 TOOLWINDOW 标志
 """
 import win32gui

@@ -8,6 +8,8 @@ from PyQt6.QtGui import QPainter, QColor, QBrush, QCursor, QAction
 import win32gui
 import win32con
 
+from utils.window_markers import is_partition_window
+
 class FloatingBallWidget(QWidget):
     clicked = pyqtSignal()
     settings_requested = pyqtSignal()
@@ -268,6 +270,9 @@ class FloatingBallWidget(QWidget):
                 
             # Skip our own windows
             if hwnd in my_hwnds:
+                return True
+
+            if is_partition_window(hwnd):
                 return True
                 
             # Skip the Shell/Desktop itself

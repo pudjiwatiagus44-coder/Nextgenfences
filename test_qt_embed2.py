@@ -1,4 +1,4 @@
-import sys
+﻿import sys
 import time
 from PyQt6.QtWidgets import QApplication, QLabel, QWidget
 from PyQt6.QtCore import Qt, QTimer
