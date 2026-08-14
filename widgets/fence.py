@@ -2,10 +2,11 @@ import os
 import sys
 import logging
 import ctypes
+import subprocess
 import win32gui
 import win32con
-from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QLabel, QApplication, 
-                             QGridLayout, QFrame, QScrollArea, QMenu, 
+from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QLabel, QApplication,
+                             QGridLayout, QFrame, QScrollArea, QMenu,
                              QInputDialog, QMessageBox, QSlider, QWidgetAction, QFileIconProvider, QStyleOption, QStyle)
 from PyQt6.QtCore import Qt, QSize, QPoint, QMimeData, QFileInfo, QEvent, pyqtSignal, QRect, QUrl, QTimer
 from PyQt6.QtGui import QIcon, QPixmap, QDrag, QAction, QCursor, QDesktopServices, QColor, QPainter, QActionGroup
@@ -19,27 +20,67 @@ from utils.window_markers import mark_partition_window, unmark_partition_window
 SW_SHOWNORMAL = 1
 
 
-def _shell_execute(path, working_dir):
-    return ctypes.windll.shell32.ShellExecuteW(
-        None,
-        "open",
-        path,
-        None,
-        working_dir,
-        SW_SHOWNORMAL,
-    )
-
-
 def open_path(path):
+    """Open a file, folder, or shortcut using the most reliable method available.
+
+    Tries os.startfile first (Python built-in, calls ShellExecuteW internally
+    with NULL verb – the most compatible).  Falls back to ShellExecuteW with
+    explicit "open" verb and proper 64-bit return type.  Last resort:
+    subprocess.Popen via cmd.exe.
+    """
     if not os.path.exists(path):
         raise FileNotFoundError(path)
 
     working_dir = path if os.path.isdir(path) else os.path.dirname(path)
-    result = _shell_execute(path, working_dir or None)
-    if int(result) <= 32:
-        raise OSError(f"ShellExecuteW failed with code {int(result)}")
+    working_dir = working_dir or None
 
-    return result
+    # ── Method 1: os.startfile ──────────────────────────────────────
+    #   Internally calls ShellExecuteW(NULL, NULL, path, NULL, NULL, 1).
+    #   NULL verb = use the file type's default action (usually "open").
+    #   This is the most compatible and well-tested path.
+    try:
+        os.startfile(path)
+        logging.info(f"Opened via os.startfile: {path}")
+        return
+    except Exception as e:
+        logging.warning(f"os.startfile failed for {path}: {e}")
+
+    # ── Method 2: ShellExecuteW with proper 64-bit return type ──────
+    #   ctypes defaults to c_int (32-bit) which truncates HINSTANCE on
+    #   64-bit Windows.  Setting restype to c_void_p fixes this.
+    try:
+        ctypes.windll.shell32.ShellExecuteW.restype = ctypes.c_void_p
+        result = ctypes.windll.shell32.ShellExecuteW(
+            None,
+            "open",
+            path,
+            None,
+            working_dir,
+            SW_SHOWNORMAL,
+        )
+        result_int = int(result) if result else 0
+        if result_int > 32:
+            logging.info(f"Opened via ShellExecuteW: {path} (hinst={result_int})")
+            return result_int
+        logging.warning(f"ShellExecuteW returned {result_int} for {path}")
+    except Exception as e:
+        logging.warning(f"ShellExecuteW failed for {path}: {e}")
+
+    # ── Method 3: subprocess via cmd.exe ────────────────────────────
+    #   Last resort – uses CreateProcess path instead of ShellExecute.
+    try:
+        subprocess.Popen(
+            f'start "" "{path}"',
+            shell=True,
+            cwd=working_dir,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+        logging.info(f"Opened via subprocess.start: {path}")
+        return
+    except Exception as e:
+        logging.error(f"All open methods failed for {path}: {e}")
+        raise OSError(f"无法打开文件: {path}")
 
 try:
     from send2trash import send2trash
