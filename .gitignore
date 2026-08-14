@@ -18,3 +18,7 @@ Release_v1.0/
 .workbuddy/
 skills/
 superpowers_skills/
+
+# Runtime logs
+app_debug.log
+dist/app_debug.log
