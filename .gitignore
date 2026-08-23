@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Build artifacts
+build/
+dist/
+*.exe
+*.zip
+*.toc
+*.pkg
+*.pyz
+
+# Large extracted/legacy dirs
+NextGenFences (2).exe_extracted/
+
+# Logs & debug output
+*.log
+*.dis
+flags.txt
+
+# IDE / tooling
+.idea/
+.vscode/
+
+# WorkBuddy workspace data (not project code)
+.workbuddy/
+skills/
+superpowers_skills/
+
+# OS
+Thumbs.db
+desktop.ini
