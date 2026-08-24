@@ -4,10 +4,10 @@
             "id": "bf9169aa",
             "title": "\u7d2b\u9e1f",
             "geometry": [
-                1890,
-                71,
+                1989,
+                241,
                 650,
-                239
+                350
             ],
             "opacity": 0.39,
             "view_mode": "icon_large",
@@ -23,7 +23,6 @@
                 "C:\\Users\\Administrator\\Documents\\MyFences\\\u7d2b\u9e1f\u5b9a\u65f6\\\u5f00\u5e7f\u544a.bat.lnk",
                 "C:\\Users\\Administrator\\Documents\\MyFences\\\u7d2b\u9e1f\u5b9a\u65f6\\\u6253\u5f00VPN-\u5b89\u5168\u7248.bat",
                 "C:\\Users\\Administrator\\Documents\\MyFences\\\u7d2b\u9e1f\u5b9a\u65f6\\\u65e7\u7248\u6e05\u7406\u8f6f\u4ef6",
-                "C:\\Users\\Administrator\\Documents\\MyFences\\\u7d2b\u9e1f\u5b9a\u65f6\\\u6e05\u7406VPN\u5e76\u6253\u5f00\u7d2b\u9e1f-\u514d\u91cd\u542f\u5b89\u5168\u7248.bat",
                 "C:\\Users\\Administrator\\Documents\\MyFences\\\u7d2b\u9e1f\u5b9a\u65f6\\\u70b9\u51fb\u6253\u5f00\u5e94\u7528\u5206\u4eab\u5305",
                 "C:\\Users\\Administrator\\Documents\\MyFences\\\u7d2b\u9e1f\u5b9a\u65f6\\\u7a0b\u5e8f\u4e3b\u9762\u677f.lnk",
                 "C:\\Users\\Administrator\\Documents\\MyFences\\\u7d2b\u9e1f\u5b9a\u65f6\\\u7d2b\u9e1f\u5b9a\u65f6 (1)",
@@ -37,8 +36,8 @@
             "id": "0fe66c9d",
             "title": "\u6587\u4ef6\u5939",
             "geometry": [
-                2051,
-                486,
+                1675,
+                640,
                 554,
                 438
             ],
@@ -83,8 +82,8 @@
             "id": "da618f50",
             "title": "\u6587\u4ef6",
             "geometry": [
-                2096,
-                765,
+                2243,
+                487,
                 520,
                 503
             ],
@@ -109,8 +108,8 @@
             "id": "f8694ea9",
             "title": "AI",
             "geometry": [
-                740,
-                860,
+                519,
+                593,
                 895,
                 438
             ],
@@ -163,8 +162,8 @@
             "id": "20191f22",
             "title": "BaiduNetdiskDownload",
             "geometry": [
-                2285,
-                259,
+                2317,
+                138,
                 393,
                 197
             ],
@@ -239,10 +238,10 @@
             "id": "1b196562",
             "title": "\u63d0\u793a\u8bcd\u548c\u89c4\u5219\u6587\u672c",
             "geometry": [
-                1388,
-                253,
-                533,
-                424
+                1110,
+                202,
+                426,
+                484
             ],
             "opacity": 0.1,
             "view_mode": "list",
