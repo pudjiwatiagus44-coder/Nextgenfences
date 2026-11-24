@@ -253,6 +253,170 @@ class FloatingBallWidget(QWidget):
         menu.exec(event.globalPos())
 
     def show_desktop(self):
+        """Toggle the desktop: first click hides app windows (fences stay), next restores.
+
+        We drive the toggle ourselves instead of asking the shell, because on
+        this machine Shell ToggleDesktop (and Win+D) hide the windows but do
+        not bring them back on the reverse toggle, so the second click looked
+        like a no-op.  We snapshot what is on screen, minimise exactly that
+        list, and restore exactly that list on the next click.
+        """
+        if self._desktop_is_shown():
+            count = len(getattr(self, "_visible_before_hide", None) or [])
+            logging.info(f"FloatingBall: desktop hidden, restoring {count} windows")
+            self._restore_snapshot()
+        else:
+            logging.info("FloatingBall: showing desktop, hiding app windows")
+            self._snapshot_visible_windows()
+            self._hide_snapshot()
+
+    # ── snapshot / restore plumbing ───────────────────────────────────
+
+    def _own_hwnds(self):
+        hwnds = set()
+        app = QApplication.instance()
+        for widget in app.topLevelWidgets():
+            try:
+                hwnds.add(int(widget.winId()))
+            except Exception:
+                pass
+        return hwnds
+
+    def _eligible_window(self, hwnd, own):
+        """A window we are willing to hide and bring back."""
+        try:
+            if hwnd in own or is_partition_window(hwnd):
+                return False
+            # Only windows that are actually on screen: never touch something
+            # the user had already minimised.
+            if not win32gui.IsWindowVisible(hwnd) or win32gui.IsIconic(hwnd):
+                return False
+            cls = win32gui.GetClassName(hwnd)
+            if cls in ("Progman", "WorkerW", "Shell_TrayWnd", "Shell_SecondaryTrayWnd",
+                       "Button", "tooltips_class32", "ForegroundStaging",
+                       "TaskListThumbnailWnd", "IME", "MSCTFIME UI"):
+                return False
+            style = win32gui.GetWindowLong(hwnd, win32con.GWL_STYLE)
+            ex = win32gui.GetWindowLong(hwnd, win32con.GWL_EXSTYLE)
+            if style & win32con.WS_CHILD:
+                return False
+            if ex & win32con.WS_EX_TOOLWINDOW:
+                return False
+            rect = win32gui.GetWindowRect(hwnd)
+            if rect[2] - rect[0] < 200 or rect[3] - rect[1] < 150:
+                return False
+            if not win32gui.GetWindowText(hwnd).strip():
+                return False
+            return True
+        except Exception:
+            return False
+
+    def _snapshot_visible_windows(self):
+        own = self._own_hwnds()
+        hwnds = []
+        try:
+            def cb(hwnd, _):
+                if self._eligible_window(hwnd, own):
+                    hwnds.append(hwnd)
+                return True
+            win32gui.EnumWindows(cb, None)
+        except Exception as e:
+            logging.error(f"FloatingBall: snapshot failed: {e}")
+        self._visible_before_hide = hwnds
+        logging.info(f"FloatingBall: snapshotted {len(hwnds)} visible windows")
+
+    def _desktop_is_shown(self):
+        """True when every snapshotted window is off screen again."""
+        snap = getattr(self, "_visible_before_hide", None)
+        if not snap:
+            return False
+        alive_hidden = 0
+        still_visible = 0
+        for hwnd in snap:
+            try:
+                if not win32gui.IsWindow(hwnd):
+                    continue
+                if win32gui.IsWindowVisible(hwnd) and not win32gui.IsIconic(hwnd):
+                    still_visible += 1
+                else:
+                    alive_hidden += 1
+            except Exception:
+                continue
+        return alive_hidden > 0 and still_visible == 0
+
+    def _hide_snapshot(self):
+        hidden = 0
+        for hwnd in list(getattr(self, "_visible_before_hide", None) or []):
+            try:
+                if not win32gui.IsWindow(hwnd):
+                    continue
+                if win32gui.IsIconic(hwnd) or not win32gui.IsWindowVisible(hwnd):
+                    continue
+                win32gui.ShowWindow(hwnd, win32con.SW_MINIMIZE)
+                hidden += 1
+            except Exception as e:
+                logging.debug(f"FloatingBall: minimising {hwnd} failed: {e}")
+        logging.info(f"FloatingBall: minimised {hidden} windows, fences untouched")
+
+    def _restore_snapshot(self):
+        snap = list(getattr(self, "_visible_before_hide", None) or [])
+        restored = 0
+        for hwnd in snap:
+            try:
+                if not win32gui.IsWindow(hwnd):
+                    continue
+                if win32gui.IsIconic(hwnd):
+                    win32gui.ShowWindow(hwnd, win32con.SW_RESTORE)
+                    restored += 1
+                elif not win32gui.IsWindowVisible(hwnd):
+                    win32gui.ShowWindow(hwnd, win32con.SW_SHOW)
+                    restored += 1
+            except Exception as e:
+                logging.debug(f"FloatingBall: restore of {hwnd} failed: {e}")
+        logging.info(f"FloatingBall: restored {restored}/{len(snap)} windows")
+        self._visible_before_hide = []
+
+    def _toggle_desktop_via_com(self):
+        try:
+            if getattr(self, "_shell_app", None) is None:
+                import win32com.client
+                self._shell_app = win32com.client.Dispatch("Shell.Application")
+            self._shell_app.ToggleDesktop()
+            return True
+        except Exception as e:
+            logging.debug(f"FloatingBall: COM ToggleDesktop failed: {e}")
+            self._shell_app = None
+            return False
+
+    @staticmethod
+    def _toggle_desktop_via_key():
+        """Fallback: inject Win+D with SendInput."""
+        try:
+            import ctypes
+            import ctypes.wintypes as wt
+            import time as _time
+
+            ULONG_PTR = ctypes.POINTER(ctypes.c_ulong)
+
+            class KEYBDINPUT(ctypes.Structure):
+                _fields_ = [("wVk", wt.WORD), ("wScan", wt.WORD), ("dwFlags", wt.DWORD),
+                            ("time", wt.DWORD), ("dwExtraInfo", ULONG_PTR)]
+
+            class INPUT(ctypes.Structure):
+                _fields_ = [("type", wt.DWORD), ("ki", KEYBDINPUT), ("pad", ctypes.c_byte * 8)]
+
+            user32 = ctypes.windll.user32
+            for vk, flags in ((0x5B, 0), (0x44, 0), (0x44, 2), (0x5B, 2)):
+                inp = INPUT(type=1, ki=KEYBDINPUT(wVk=vk, wScan=0, dwFlags=flags,
+                                                  time=0, dwExtraInfo=None))
+                user32.SendInput(1, ctypes.byref(inp), ctypes.sizeof(INPUT))
+                _time.sleep(0.02)
+            return True
+        except Exception as e:
+            logging.warning(f"FloatingBall: Win+D injection failed: {e}")
+            return False
+
+    def _minimize_except_fences(self):
         logging.info("FloatingBall: Minimizing windows...")
         
         # Get our own HWNDs to exclude
