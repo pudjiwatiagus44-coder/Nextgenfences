@@ -3,6 +3,7 @@ import os
 import shlex
 import shutil
 import sys
+import time
 import traceback
 
 import win32con
@@ -57,6 +58,7 @@ logging.basicConfig(
     filename=log_file,
     level=logging.DEBUG,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    encoding="utf-8",
     force=True,
 )
 
@@ -275,44 +277,68 @@ class NextGenDesktopApp:
         """Restore fences just above the desktop layer, BELOW normal app windows.
 
         Desktop-widget semantics (like StarDesk/Fences): fences live between
-        the desktop background (WorkerW) and regular application windows, so
-        restored windows always cover them again.  We chain-insert every fence
-        right above the desktop view window to keep a stable z-order.
+        the desktop background (WorkerW/Progman) and regular application windows,
+        so restored windows always cover them again.  We chain-insert every fence
+        right above whichever window *currently* hosts the desktop icon layer.
+
+        The host is re-resolved on every call: Windows moves SHELLDLL_DefView
+        into a raised WorkerW while the desktop is shown, and back into Progman
+        when it is dismissed.  Anchoring to a stale host is what used to bury
+        the fences behind the wallpaper after Win+D.
         """
         logging.info("Restoring all partition windows (desktop level, below app windows)")
         anchor = self._desktop_insert_anchor()
+        if anchor is None:
+            logging.warning("No desktop anchor; leaving partition z-order untouched")
+            return
+
         for fence_id, fence in list(self.fences.items()):
             try:
                 hwnd = int(fence.winId())
-                if win32gui.IsIconic(hwnd) or not win32gui.IsWindowVisible(hwnd):
+                if not win32gui.IsWindow(hwnd):
+                    continue
+                if win32gui.IsIconic(hwnd):
+                    win32gui.ShowWindow(hwnd, win32con.SW_RESTORE)
+                elif not win32gui.IsWindowVisible(hwnd):
                     win32gui.ShowWindow(hwnd, win32con.SW_SHOWNOACTIVATE)
-                if anchor is None:
-                    continue
-                if anchor == hwnd:
-                    # fence already sits directly above the desktop layer
-                    continue
-                win32gui.SetWindowPos(
-                    hwnd,
-                    anchor,
-                    0,
-                    0,
-                    0,
-                    0,
-                    win32con.SWP_NOMOVE
-                    | win32con.SWP_NOSIZE
-                    | win32con.SWP_NOACTIVATE,
-                )
+
+                # A fence must never be topmost: it would cover real app windows.
+                ex_style = win32gui.GetWindowLong(hwnd, win32con.GWL_EXSTYLE)
+                if ex_style & win32con.WS_EX_TOPMOST:
+                    win32gui.SetWindowPos(
+                        hwnd,
+                        win32con.HWND_NOTOPMOST,
+                        0, 0, 0, 0,
+                        win32con.SWP_NOMOVE | win32con.SWP_NOSIZE | win32con.SWP_NOACTIVATE,
+                    )
+                    ex_style &= ~win32con.WS_EX_TOPMOST
+
+                if anchor != hwnd:
+                    win32gui.SetWindowPos(
+                        hwnd,
+                        anchor,
+                        0,
+                        0,
+                        0,
+                        0,
+                        win32con.SWP_NOMOVE
+                        | win32con.SWP_NOSIZE
+                        | win32con.SWP_NOACTIVATE,
+                    )
                 anchor = hwnd  # next fence goes above this one (keep order)
             except Exception as e:
                 logging.error(f"Failed to restore fence {fence_id}: {e}")
 
     def _desktop_insert_anchor(self):
-        """HWND of the window directly ABOVE the desktop view (WorkerW/Progman).
+        """HWND that ``SetWindowPos`` should insert each fence *after*.
 
-        ``SetWindowPos(fence, anchor)`` places the fence immediately behind
-        ``anchor`` in z-order, i.e. just above the desktop layer and below all
-        normal application windows.  Returns None if the desktop view cannot
-        be located (caller then leaves fences where they are).
+        Returns the window sitting directly ABOVE the current desktop-icon host
+        (or ``HWND_TOP`` when the host is itself the topmost non-topmost window,
+        which is the case while the desktop is shown).  Inserting after that
+        window places the fence immediately above the desktop layer and below
+        every normal application window.
+
+        Returns None only if the desktop host cannot be located at all.
         """
         try:
             hook = getattr(self, "desktop_hook", None)
@@ -323,7 +349,15 @@ class NextGenDesktopApp:
                 logging.warning("Desktop view window not found; skipping z-order reposition")
                 return None
             above = win32gui.GetWindow(desk, win32con.GW_HWNDPREV)
-            return above if above else win32con.HWND_TOP
+            if not above:
+                return win32con.HWND_TOP
+            # Inheriting from a topmost window would make the fence topmost too.
+            try:
+                if win32gui.GetWindowLong(above, win32con.GWL_EXSTYLE) & win32con.WS_EX_TOPMOST:
+                    return win32con.HWND_TOP
+            except Exception:
+                pass
+            return above
         except Exception as e:
             logging.error(f"Failed to locate desktop insert anchor: {e}")
             return None
@@ -340,15 +374,31 @@ class NextGenDesktopApp:
 
     def restore_after_system_show_desktop(self):
         logging.info("System show desktop detected; scheduling partition restore")
-        # Immediate + staggered restores to handle Win+D / Show Desktop animation
-        for delay_ms in (0, 150, 400, 800):
-            QTimer.singleShot(delay_ms, self.restore_all_fences)
+        self._request_restore("show-desktop")
 
     def reanchor_fences_below_apps(self):
         """App windows ended up BELOW the fences (e.g. right after Show
         Desktop was toggled back).  Push fences down to the desktop layer."""
         logging.info("Window/fence z-order violation; re-anchoring fences to desktop level")
-        for delay_ms in (0, 300, 800):
+        self._request_restore("z-order-violation")
+
+    def _request_restore(self, reason):
+        """Schedule one staggered restore sequence, debounced.
+
+        Several independent detectors (global WinEvent burst, desktop-host
+        change, z-order poll) can all fire for the same Show Desktop toggle;
+        without this debounce each of them queued its own 0/150/400/800 ms
+        restore burst.
+        """
+        now = time.monotonic() * 1000
+        if now - getattr(self, "_restore_seq_ts", 0) < 400:
+            logging.debug(f"restore request dropped (debounce): {reason}")
+            return
+        self._restore_seq_ts = now
+        # Immediate + dense staggered restores: the shell moves the desktop
+        # icon layer a few dozen ms into the Show Desktop animation, so an early
+        # retry is what actually lands the fences above the raised WorkerW.
+        for delay_ms in (0, 60, 120, 200, 350, 600, 900):
             QTimer.singleShot(delay_ms, self.restore_all_fences)
 
     def check_fences_health(self):

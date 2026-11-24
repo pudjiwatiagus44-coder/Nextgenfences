@@ -80,6 +80,7 @@ class DesktopHook(QObject):
 
         # Desktop view window (WorkerW/Progman hosting SHELLDLL_DefView).
         self._desktop_view_hwnd = 0
+        self._poll_host = 0               # host seen on the previous poll
         self._was_covered = False         # desktop layer above a fence?
         self._last_cover_emit_ts = 0      # cooldown for repeat emits while covered
 
@@ -186,23 +187,61 @@ class DesktopHook(QObject):
 
     # ── Polling fallback ─────────────────────────────────────────────
 
-    def _find_desktop_view(self) -> int:
-        """HWND of the desktop view window (WorkerW/Progman w/ SHELLDLL_DefView)."""
-        if self._desktop_view_hwnd and win32gui.IsWindow(self._desktop_view_hwnd):
-            return self._desktop_view_hwnd
+    @staticmethod
+    def _hosts_defview(hwnd) -> bool:
+        """True if ``hwnd`` (Progman/WorkerW) currently hosts SHELLDLL_DefView.
+
+        Windows 10 22H2 *moves* SHELLDLL_DefView around: while the desktop is
+        shown (Win+D / taskbar button) it lives in a WorkerW that the shell
+        raises to the very top of the z-order; when the desktop is dismissed it
+        goes back to Progman.  A handle is therefore only a valid desktop host
+        whilst it still contains the DefView child.
+        """
+        try:
+            if not hwnd or not win32gui.IsWindow(hwnd):
+                return False
+            if win32gui.FindWindowEx(hwnd, 0, "SHELLDLL_DefView", None):
+                return True
+            # DefView may be nested inside a child WorkerW of the host
+            child = win32gui.FindWindowEx(hwnd, 0, "WorkerW", None)
+            while child:
+                if win32gui.FindWindowEx(child, 0, "SHELLDLL_DefView", None):
+                    return True
+                child = win32gui.FindWindowEx(hwnd, child, "WorkerW", None)
+        except Exception as e:
+            logger.debug(f"_hosts_defview({hwnd}) failed: {e}")
+        return False
+
+    def _find_desktop_view(self, force_refresh: bool = False) -> int:
+        """HWND of the window that CURRENTLY hosts the desktop icon layer.
+
+        The cached handle is only reused while it still contains
+        SHELLDLL_DefView; as soon as the shell relocates the icon layer
+        (Show Desktop / wallpaper change / explorer restart) we re-enumerate.
+
+        EnumWindows walks top-to-bottom, so the first match is the topmost
+        host - exactly the raised WorkerW while the desktop is shown, which is
+        the window we must insert the fences above.
+        """
+        cached = self._desktop_view_hwnd
+        if not force_refresh and cached and self._hosts_defview(cached):
+            return cached
         found = [0]
 
         def _cb(hwnd, _):
             if win32gui.GetClassName(hwnd) in ("Progman", "WorkerW"):
-                if win32gui.FindWindowEx(hwnd, 0, "SHELLDLL_DefView", None):
+                if self._hosts_defview(hwnd):
                     found[0] = hwnd
-                    return False  # stop enumeration
+                    return False  # stop enumeration (topmost match wins)
             return True
 
         try:
             win32gui.EnumWindows(_cb, None)
-        except Exception:
-            pass
+        except Exception as e:
+            logger.debug(f"EnumWindows failed while resolving desktop view: {e}")
+
+        if found[0] != cached:
+            logger.info(f"Desktop view host changed: {cached} -> {found[0]}")
         self._desktop_view_hwnd = found[0]
         return self._desktop_view_hwnd
 
@@ -222,7 +261,7 @@ class DesktopHook(QObject):
             logger.debug(f"EnumWindows failed in z-order snapshot: {e}")
         return order
 
-    def _desktop_covers_fence(self, order: list[int] | None = None) -> bool:
+    def _desktop_covers_fence(self, order: list[int] | None = None, desk: int | None = None) -> bool:
         """True if the desktop view window sits ABOVE any fence in z-order.
 
         This is the *ground truth* for "Show Desktop covered the fences":
@@ -231,7 +270,7 @@ class DesktopHook(QObject):
         """
         if not self._fence_hwnds:
             return False
-        desk = self._find_desktop_view()
+        desk = desk or self._find_desktop_view()
         if not desk:
             return False
         order = order if order is not None else self._zorder_snapshot()
@@ -285,9 +324,23 @@ class DesktopHook(QObject):
             order = self._zorder_snapshot()
             now_ms = int(time.monotonic() * 1000)
 
+            # 0) The shell relocates the desktop icon layer when Show Desktop is
+            #    toggled (Progman <-> raised WorkerW).  Whichever window hosts it
+            #    now is the correct insertion point, so a host change always
+            #    means "re-anchor the fences" - in BOTH directions.
+            desk = self._find_desktop_view()
+            if desk and desk != self._poll_host:
+                first = self._poll_host == 0
+                self._poll_host = desk
+                if not first:
+                    logger.info(f"Desktop host switched to {desk}; re-anchoring fences")
+                    self._last_restore_ts = 0        # bypass cooldown
+                    self._was_covered = False
+                    self._emit_shown()
+
             # 1) z-order check – catches "Show Desktop" even when no windows
             #    were minimised (burst detection blind spot).
-            covered = self._desktop_covers_fence(order)
+            covered = self._desktop_covers_fence(order, desk)
             if covered:
                 if not self._was_covered:
                     logger.info("Desktop layer raised above fences (z-order poll)")
@@ -301,7 +354,11 @@ class DesktopHook(QObject):
             # 2) desktop-widget invariant – app windows must be above fences.
             #    Fires after "Show Desktop" is toggled back, when Windows puts
             #    restored windows below the fences we raised earlier.
-            if not covered and self._app_window_below_fence(order):
+            #    Skipped while the desktop is shown (host != Progman), otherwise
+            #    it would fight check 1 and make the fences flicker.
+            progman = win32gui.FindWindow("Progman", None)
+            desk_shown = bool(desk) and desk != progman
+            if not covered and not desk_shown and self._app_window_below_fence(order):
                 if not self._was_violation:
                     logger.info("App window below fences (z-order invariant poll)")
                 if not self._was_violation or now_ms - self._last_violation_emit_ts >= 1000:

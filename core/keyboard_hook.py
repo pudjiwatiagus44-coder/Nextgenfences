@@ -78,12 +78,17 @@ class GlobalKeyboardHook:
                 # Track Win key
                 if vk_code in (VK_LWIN, VK_RWIN):
                     cls._pressed_keys.add("WIN")
-                # Detect Win+D
+                # Detect Win+D: observe only, let Windows handle the toggle itself.
+                #
+                # Suppressing Win+D and minimising windows by hand made the app
+                # fight explorer (and it skipped windows that ignore
+                # SW_MINIMIZE, e.g. Flutter/Chromium surfaces), so the desktop
+                # never really got shown.  The desktop layer is re-anchored by
+                # core.desktop_hook instead, which follows the shell's own
+                # WorkerW/Progman host changes.
                 elif vk_code == VK_D and "WIN" in cls._pressed_keys:
-                    logger.info("Win+D intercepted by GlobalKeyboardHook")
+                    logger.debug("Win+D observed (pass-through, system handles toggle)")
                     cls._pressed_keys.clear()
-                    cls._minimize_except_fences()
-                    return 1  # Suppress the keypress
 
             elif wParam in (WM_KEYUP, WM_SYSKEYUP):
                 if vk_code in (VK_LWIN, VK_RWIN):
