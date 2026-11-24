@@ -4,15 +4,18 @@
             "id": "bf9169aa",
             "title": "\u7d2b\u9e1f",
             "geometry": [
-                1989,
-                241,
-                650,
-                350
+                2383,
+                74,
+                393,
+                172
             ],
             "opacity": 0.39,
             "view_mode": "icon_large",
             "path": "C:\\Users\\Administrator\\Documents\\MyFences\\\u7d2b\u9e1f\u5b9a\u65f6",
             "custom_order": [
+                "C:\\Users\\Administrator\\Documents\\MyFences\\\u7d2b\u9e1f\u5b9a\u65f6\\\u6253\u5f00VPN-\u5b89\u5168\u7248.bat",
+                "C:\\Users\\Administrator\\Documents\\MyFences\\\u7d2b\u9e1f\u5b9a\u65f6\\\u6e05\u7406VPN\u5e76\u6253\u5f00\u7d2b\u9e1f-\u514d\u91cd\u542f\u5b89\u5168\u7248.bat",
+                "C:\\Users\\Administrator\\Documents\\MyFences\\\u7d2b\u9e1f\u5b9a\u65f6\\\u7a0b\u5e8f\u4e3b\u9762\u677f.lnk",
                 "C:\\Users\\Administrator\\Documents\\MyFences\\\u7d2b\u9e1f\u5b9a\u65f6\\clean-vpn-open-ziniao.log",
                 "C:\\Users\\Administrator\\Documents\\MyFences\\\u7d2b\u9e1f\u5b9a\u65f6\\close-floating-ball.ps1",
                 "C:\\Users\\Administrator\\Documents\\MyFences\\\u7d2b\u9e1f\u5b9a\u65f6\\FlClash-floating-ball.ps1",
@@ -21,12 +24,11 @@
                 "C:\\Users\\Administrator\\Documents\\MyFences\\\u7d2b\u9e1f\u5b9a\u65f6\\\u5173\u5e7f\u544a.bat.lnk",
                 "C:\\Users\\Administrator\\Documents\\MyFences\\\u7d2b\u9e1f\u5b9a\u65f6\\\u5206\u4eab\u5305",
                 "C:\\Users\\Administrator\\Documents\\MyFences\\\u7d2b\u9e1f\u5b9a\u65f6\\\u5f00\u5e7f\u544a.bat.lnk",
-                "C:\\Users\\Administrator\\Documents\\MyFences\\\u7d2b\u9e1f\u5b9a\u65f6\\\u6253\u5f00VPN-\u5b89\u5168\u7248.bat",
                 "C:\\Users\\Administrator\\Documents\\MyFences\\\u7d2b\u9e1f\u5b9a\u65f6\\\u65e7\u7248\u6e05\u7406\u8f6f\u4ef6",
                 "C:\\Users\\Administrator\\Documents\\MyFences\\\u7d2b\u9e1f\u5b9a\u65f6\\\u70b9\u51fb\u6253\u5f00\u5e94\u7528\u5206\u4eab\u5305",
-                "C:\\Users\\Administrator\\Documents\\MyFences\\\u7d2b\u9e1f\u5b9a\u65f6\\\u7a0b\u5e8f\u4e3b\u9762\u677f.lnk",
                 "C:\\Users\\Administrator\\Documents\\MyFences\\\u7d2b\u9e1f\u5b9a\u65f6\\\u7d2b\u9e1f\u5b9a\u65f6 (1)",
-                "C:\\Users\\Administrator\\Documents\\MyFences\\\u7d2b\u9e1f\u5b9a\u65f6\\\u81ea\u52a8\u6253\u5f00\u7d2b\u9e1f (2)"
+                "C:\\Users\\Administrator\\Documents\\MyFences\\\u7d2b\u9e1f\u5b9a\u65f6\\\u81ea\u52a8\u6253\u5f00\u7d2b\u9e1f (2)",
+                "C:\\Users\\Administrator\\Documents\\MyFences\\\u7d2b\u9e1f\u5b9a\u65f6\\run-capture.log"
             ],
             "font_size": 14,
             "sort_by": "custom",
@@ -36,8 +38,8 @@
             "id": "0fe66c9d",
             "title": "\u6587\u4ef6\u5939",
             "geometry": [
-                1675,
-                640,
+                1697,
+                552,
                 554,
                 438
             ],
@@ -83,7 +85,7 @@
             "title": "\u6587\u4ef6",
             "geometry": [
                 2243,
-                487,
+                488,
                 520,
                 503
             ],
@@ -108,8 +110,8 @@
             "id": "f8694ea9",
             "title": "AI",
             "geometry": [
-                519,
-                593,
+                964,
+                594,
                 895,
                 438
             ],
@@ -118,128 +120,56 @@
             "path": "C:\\Users\\Administrator\\Documents\\MyFences\\AI",
             "custom_order": [
                 "C:\\Users\\Administrator\\Documents\\MyFences\\AI\\Antigravity (1).lnk",
+                "C:\\Users\\Administrator\\Documents\\MyFences\\AI\\CC Switch.lnk",
+                "C:\\Users\\Administrator\\Documents\\MyFences\\AI\\ChatGPT.lnk",
                 "C:\\Users\\Administrator\\Documents\\MyFences\\AI\\CodeBuddy.lnk",
                 "C:\\Users\\Administrator\\Documents\\MyFences\\AI\\Cursor.lnk",
-                "C:\\Users\\Administrator\\Documents\\MyFences\\AI\\FlClash.lnk",
                 "C:\\Users\\Administrator\\Documents\\MyFences\\AI\\Hermes.lnk",
                 "C:\\Users\\Administrator\\Documents\\MyFences\\AI\\MiniMax Code.lnk",
                 "C:\\Users\\Administrator\\Documents\\MyFences\\AI\\NotebookLM.lnk",
                 "C:\\Users\\Administrator\\Documents\\MyFences\\AI\\Obsidian.lnk",
                 "C:\\Users\\Administrator\\Documents\\MyFences\\AI\\Oracle VirtualBox.lnk",
-                "C:\\Users\\Administrator\\Documents\\MyFences\\AI\\Trae CN.lnk",
                 "C:\\Users\\Administrator\\Documents\\MyFences\\AI\\Trae.lnk",
+                "C:\\Users\\Administrator\\Documents\\MyFences\\AI\\Visual Studio Code.lnk",
                 "C:\\Users\\Administrator\\Documents\\MyFences\\AI\\WorkBuddy.lnk",
-                "C:\\Users\\Administrator\\Documents\\MyFences\\AI\\Visual Studio Code.lnk"
+                "C:\\Users\\Administrator\\Documents\\MyFences\\AI\\\u542f\u52a8DSH.bat",
+                "C:\\Users\\Administrator\\Documents\\MyFences\\AI\\FlClash.lnk",
+                "C:\\Users\\Administrator\\Documents\\MyFences\\AI\\Trae CN.lnk"
             ],
-            "font_size": 14
+            "font_size": 14,
+            "sort_by": "custom",
+            "sort_order": "asc"
         },
         {
             "id": "23a82373",
             "title": "\u5f71\u97f3",
             "geometry": [
-                1688,
-                39,
+                903,
+                -4,
                 556,
-                394
+                233
             ],
             "opacity": 0.27,
             "view_mode": "icon_medium",
             "path": "C:\\Users\\Administrator\\Documents\\MyFences\\\u5f71\u97f3",
             "custom_order": [
-                "C:\\Users\\Administrator\\Documents\\MyFences\\\u5f71\u97f3\\\u683c\u5f0f\u64ad\u653e\u5668.lnk",
-                "C:\\Users\\Administrator\\Documents\\MyFences\\\u5f71\u97f3\\\u8292\u679cTV.lnk",
                 "C:\\Users\\Administrator\\Documents\\MyFences\\\u5f71\u97f3\\\u54d4\u54e9\u54d4\u54e9.lnk",
+                "C:\\Users\\Administrator\\Documents\\MyFences\\\u5f71\u97f3\\\u6296\u97f3.lnk",
+                "C:\\Users\\Administrator\\Documents\\MyFences\\\u5f71\u97f3\\\u683c\u5f0f\u5de5\u5382.lnk",
+                "C:\\Users\\Administrator\\Documents\\MyFences\\\u5f71\u97f3\\\u683c\u5f0f\u64ad\u653e\u5668.lnk",
                 "C:\\Users\\Administrator\\Documents\\MyFences\\\u5f71\u97f3\\\u7231\u5947\u827a.lnk",
                 "C:\\Users\\Administrator\\Documents\\MyFences\\\u5f71\u97f3\\\u7f51\u6613\u4e91\u97f3\u4e50.lnk",
                 "C:\\Users\\Administrator\\Documents\\MyFences\\\u5f71\u97f3\\\u817e\u8baf\u89c6\u9891.lnk",
-                "C:\\Users\\Administrator\\Documents\\MyFences\\\u5f71\u97f3\\\u683c\u5f0f\u5de5\u5382.lnk",
-                "C:\\Users\\Administrator\\Documents\\MyFences\\\u5f71\u97f3\\\u4f18\u9177.lnk",
-                "C:\\Users\\Administrator\\Documents\\MyFences\\\u5f71\u97f3\\\u6296\u97f3.lnk"
+                "C:\\Users\\Administrator\\Documents\\MyFences\\\u5f71\u97f3\\\u8292\u679cTV.lnk"
             ],
             "font_size": 16
-        },
-        {
-            "id": "20191f22",
-            "title": "BaiduNetdiskDownload",
-            "geometry": [
-                2317,
-                138,
-                393,
-                197
-            ],
-            "opacity": 0.1,
-            "view_mode": "list",
-            "sort_by": "name",
-            "sort_order": "asc",
-            "path": "F:/BaiduNetdiskDownload",
-            "custom_order": [
-                "F:\\BaiduNetdiskDownload\\1-AI\u5927\u6a21\u578b\u539f\u7406\u4e0eAPI\u4f7f\u7528",
-                "F:\\BaiduNetdiskDownload\\10-MCP\u4e0eA2A\u7684\u5e94\u7528",
-                "F:\\BaiduNetdiskDownload\\11-Agent\u667a\u80fd\u4f53\u7cfb\u7edf\u7684\u8bbe\u8ba1\u4e0e\u5e94\u7528",
-                "F:\\BaiduNetdiskDownload\\11. Agent\u667a\u80fd\u4f53\u7cfb\u7edf\u7684\u8bbe\u8ba1\u4e0e\u5e94\u7528.mp4",
-                "F:\\BaiduNetdiskDownload\\12-\u89c6\u89c9\u5927\u6a21\u578b\u4e0e\u591a\u6a21\u6001\u7406\u89e3",
-                "F:\\BaiduNetdiskDownload\\12. \u89c6\u89c9\u5927\u6a21\u578b\u4e0e\u591a\u6a21\u6001\u7406\u89e3.mp4",
-                "F:\\BaiduNetdiskDownload\\13-Fine-tuning\u5fae\u8c03\u827a\u672f",
-                "F:\\BaiduNetdiskDownload\\13. Fine-tuning \u5fae\u8c03\u827a\u672f.mp4",
-                "F:\\BaiduNetdiskDownload\\14-Fine-tuning\u5b9e\u64cd",
-                "F:\\BaiduNetdiskDownload\\14. Fine-tuning \u5b9e\u64cd.mp4",
-                "F:\\BaiduNetdiskDownload\\15-Coze\u5de5\u4f5c\u539f\u7406\u4e0e\u5e94\u7528\u5b9e\u4f8b",
-                "F:\\BaiduNetdiskDownload\\15-Coze\u5de5\u4f5c\u539f\u7406\u4e0e\u5e94\u7528\u5b9e\u4f8b(1)",
-                "F:\\BaiduNetdiskDownload\\15. Coze\u5de5\u4f5c\u539f\u7406\u4e0e\u5e94\u7528\u5b9e\u4f8b.mp4",
-                "F:\\BaiduNetdiskDownload\\16-Agent\u8fdb\u9636\u5b9e\u6218\u4e0e\u63d2\u4ef6\u5f00\u53d1",
-                "F:\\BaiduNetdiskDownload\\16. Coze\u63d2\u4ef6\u5f00\u53d1\u5b9e\u6218.mp4",
-                "F:\\BaiduNetdiskDownload\\17-Dify\u672c\u5730\u5316\u90e8\u7f72\u548c\u5e94\u7528",
-                "F:\\BaiduNetdiskDownload\\17. Dify\u672c\u5730\u5316\u90e8\u7f72\u548c\u5e94\u7528.mp4",
-                "F:\\BaiduNetdiskDownload\\18-\u5206\u6790\u5f0fAI\u57fa\u7840",
-                "F:\\BaiduNetdiskDownload\\18. \u5206\u6790\u5f0fAI\u57fa\u7840.mp4",
-                "F:\\BaiduNetdiskDownload\\19-\u4e0d\u540c\u9886\u57df\u7684AI\u7b97\u6cd5",
-                "F:\\BaiduNetdiskDownload\\19. \u4e0d\u540c\u9886\u57df\u7684AI\u7b97\u6cd5.mp4",
-                "F:\\BaiduNetdiskDownload\\1\u3001AI\u5927\u6a21\u578b\u57fa\u672c\u539f\u7406\u53caAPI\u5e94\u7528.mp4",
-                "F:\\BaiduNetdiskDownload\\2-DeepSeek\u4f7f\u7528\u4e0ePrompt\u5de5\u7a0b",
-                "F:\\BaiduNetdiskDownload\\20-\u673a\u5668\u5b66\u4e60\u795e\u5668",
-                "F:\\BaiduNetdiskDownload\\20. \u673a\u5668\u5b66\u4e60\u795e\u5668.mp4",
-                "F:\\BaiduNetdiskDownload\\21-\u65f6\u95f4\u5e8f\u5217\u6a21\u578b",
-                "F:\\BaiduNetdiskDownload\\21. \u65f6\u95f4\u5e8f\u5217\u6a21\u578b.mp4",
-                "F:\\BaiduNetdiskDownload\\22-\u65f6\u95f4\u5e8f\u5217AI\u5927\u8d5b",
-                "F:\\BaiduNetdiskDownload\\22. \u65f6\u95f4\u5e8f\u5217\u5927\u8d5b.mp4",
-                "F:\\BaiduNetdiskDownload\\23-\u795e\u7ecf\u7f51\u7edc\u57fa\u7840\u4e0eTensorflow\u5b9e\u6218",
-                "F:\\BaiduNetdiskDownload\\23. \u795e\u7ecf\u7f51\u7edc\u57fa\u7840\u4e0eTensorflow\u5b9e\u6218.mp4",
-                "F:\\BaiduNetdiskDownload\\24-Pytorch\u4e0e\u89c6\u89c9\u68c0\u6d4b",
-                "F:\\BaiduNetdiskDownload\\24. Pytorch\u4e0e\u89c6\u89c9\u68c0\u6d4b.mp4",
-                "F:\\BaiduNetdiskDownload\\25-\u9879\u76ee\u5b9e\u6218\uff1a\u4f01\u4e1a\u77e5\u8bc6\u5e93",
-                "F:\\BaiduNetdiskDownload\\25. \u9879\u76ee\u5b9e\u6218\uff1a\u4f01\u4e1a\u77e5\u8bc6\u5e93 \uff08\u4f01\u4e1aRAG\u5927\u8d5b\u51a0\u519b\u9879\u76ee\uff09.mp4",
-                "F:\\BaiduNetdiskDownload\\26-\u9879\u76ee\u5b9e\u6218\uff1a\u4ea4\u4e92\u5f0fBI\u62a5\u8868",
-                "F:\\BaiduNetdiskDownload\\26. \u9879\u76ee\u5b9e\u6218\uff1a\u4ea4\u4e92\u5f0fBI\u62a5\u8868 \uff08AI\u91cf\u5316\u4ea4\u6613\u52a9\u624b\uff09.mp4",
-                "F:\\BaiduNetdiskDownload\\27-\u9879\u76ee\u5b9e\u6218\uff1aAI\u8fd0\u8425\u52a9\u624b",
-                "F:\\BaiduNetdiskDownload\\27. \u9879\u76ee\u5b9e\u6218\uff1aAI\u667a\u6167\u8fd0\u8425\u52a9\u624b\uff08\u767e\u4e07\u5ba2\u7fa4\u7ecf\u8425\uff09.mp4",
-                "F:\\BaiduNetdiskDownload\\28-\u9879\u76ee\u5b9e\u6218\uff1aAI\u641c\u7d22\u7c7b\u5e94\u7528",
-                "F:\\BaiduNetdiskDownload\\28. \u9879\u76ee\u5b9e\u6218\uff1aAI\u641c\u7d22\u7c7b\u5e94\u7528 \uff08\u77e5\u4e4e\u76f4\u7b54\uff09.mp4",
-                "F:\\BaiduNetdiskDownload\\2\u3001DeepSeek\u4f7f\u7528\u4e0eprompt\u5de5\u7a0b.mp4",
-                "F:\\BaiduNetdiskDownload\\3-Cursor\u7f16\u7a0b-\u4ece\u5165\u95e8\u5230\u7cbe\u901a",
-                "F:\\BaiduNetdiskDownload\\3\u3001Cursor\u7f16\u7a0b-\u4ece\u5165\u95e8\u5230\u7cbe\u901a.mp4",
-                "F:\\BaiduNetdiskDownload\\4-Embeddings\u548c\u5411\u91cf\u6570\u636e\u5e93",
-                "F:\\BaiduNetdiskDownload\\4\u3001Embeddings\u548c\u5411\u91cf\u6570\u636e\u5e93.mp4",
-                "F:\\BaiduNetdiskDownload\\5-RAG\u6280\u672f\u4e0e\u5e94\u7528",
-                "F:\\BaiduNetdiskDownload\\5\u3001RAG\u6280\u672f\u4e0e\u5e94\u7528.mp4",
-                "F:\\BaiduNetdiskDownload\\6-RAG\u9ad8\u7ea7\u6280\u672f\u4e0e\u6700\u4f73\u5b9e\u8df5",
-                "F:\\BaiduNetdiskDownload\\6.RAG\u7684\u9ad8\u7ea7\u6280\u5de7.mp4",
-                "F:\\BaiduNetdiskDownload\\6\u3001RAG\u7684\u9ad8\u7ea7\u6280\u5de7.mp4",
-                "F:\\BaiduNetdiskDownload\\7-Text2SQL\uff1a\u81ea\u52a9\u5f0f\u6570\u636e\u62a5\u8868\u5f00\u53d1",
-                "F:\\BaiduNetdiskDownload\\7. Text2SQL\uff1a\u81ea\u52a9\u5f0f\u6570\u636e\u62a5\u8868\u5f00\u53d1.mp4",
-                "F:\\BaiduNetdiskDownload\\8-LangChain\uff1a\u591a\u4efb\u52a1\u5e94\u7528\u5f00\u53d1",
-                "F:\\BaiduNetdiskDownload\\8. LangChain\uff1a\u591a\u4efb\u52a1\u5e94\u7528\u5f00\u53d1.mp4",
-                "F:\\BaiduNetdiskDownload\\9-Function Calling\u4e0e\u534f\u4f5c",
-                "F:\\BaiduNetdiskDownload\\9. Function Calling\u4e0e\u667a\u80fdAgent\u5f00\u53d1.mp4",
-                "F:\\BaiduNetdiskDownload\\\u548c\u5e73\u8fdb\u6b65\u76ee\u6807\u6cd5.png",
-                "F:\\BaiduNetdiskDownload\\10. MCP\u4e0eA2A\u7684\u5e94\u7528.mp4"
-            ]
         },
         {
             "id": "1b196562",
             "title": "\u63d0\u793a\u8bcd\u548c\u89c4\u5219\u6587\u672c",
             "geometry": [
-                1110,
-                202,
+                1275,
+                194,
                 426,
                 484
             ],
@@ -251,11 +181,15 @@
             "custom_order": [
                 "C:\\Users\\Administrator\\Documents\\MyFences\\\u63d0\u793a\u8bcd\u548c\u89c4\u5219\u6587\u672c\\cursor rules.txt",
                 "C:\\Users\\Administrator\\Documents\\MyFences\\\u63d0\u793a\u8bcd\u548c\u89c4\u5219\u6587\u672c\\deepseek api.txt",
+                "C:\\Users\\Administrator\\Documents\\MyFences\\\u63d0\u793a\u8bcd\u548c\u89c4\u5219\u6587\u672c\\github token.txt",
                 "C:\\Users\\Administrator\\Documents\\MyFences\\\u63d0\u793a\u8bcd\u548c\u89c4\u5219\u6587\u672c\\Openclaw\u505c\u6b62\u5f00\u673a\u542f\u52a8\u3002.txt",
                 "C:\\Users\\Administrator\\Documents\\MyFences\\\u63d0\u793a\u8bcd\u548c\u89c4\u5219\u6587\u672c\\skill\u63d0\u793a\u8bcd.txt",
                 "C:\\Users\\Administrator\\Documents\\MyFences\\\u63d0\u793a\u8bcd\u548c\u89c4\u5219\u6587\u672c\\\u53d1\u8d27skill.txt",
+                "C:\\Users\\Administrator\\Documents\\MyFences\\\u63d0\u793a\u8bcd\u548c\u89c4\u5219\u6587\u672c\\\u540e\u7aef\u5b89\u5168\u6d4b\u8bd5.txt",
+                "C:\\Users\\Administrator\\Documents\\MyFences\\\u63d0\u793a\u8bcd\u548c\u89c4\u5219\u6587\u672c\\\u5b89\u5353\u6a21\u62df\u5668.txt",
                 "C:\\Users\\Administrator\\Documents\\MyFences\\\u63d0\u793a\u8bcd\u548c\u89c4\u5219\u6587\u672c\\\u63d0\u793a\u8bcd3.txt",
-                "C:\\Users\\Administrator\\Documents\\MyFences\\\u63d0\u793a\u8bcd\u548c\u89c4\u5219\u6587\u672c\\\u540e\u7aef\u5b89\u5168\u6d4b\u8bd5.txt"
+                "C:\\Users\\Administrator\\Documents\\MyFences\\\u63d0\u793a\u8bcd\u548c\u89c4\u5219\u6587\u672c\\\u8fde\u63a5\u670d\u52a1\u5668\u4ee3\u7801.txt",
+                "C:\\Users\\Administrator\\Documents\\MyFences\\\u63d0\u793a\u8bcd\u548c\u89c4\u5219\u6587\u672c\\codex.txt"
             ],
             "font_size": 15
         },
@@ -263,16 +197,34 @@
             "id": "a6ac4810",
             "title": "AI\u9879\u76ee\u96c6\u5408",
             "geometry": [
-                804,
-                220,
+                706,
+                191,
                 321,
-                250
+                509
             ],
             "opacity": 0.1,
             "view_mode": "icon_medium",
             "sort_by": "name",
             "sort_order": "asc",
-            "path": "G:/AI\u9879\u76ee\u96c6\u5408"
+            "path": "G:/AI\u9879\u76ee\u96c6\u5408",
+            "custom_order": [
+                "G:\\AI\u9879\u76ee\u96c6\u5408\\localsend",
+                "G:\\AI\u9879\u76ee\u96c6\u5408\\ozon",
+                "G:\\AI\u9879\u76ee\u96c6\u5408\\scrypy",
+                "G:\\AI\u9879\u76ee\u96c6\u5408\\work Buddy",
+                "G:\\AI\u9879\u76ee\u96c6\u5408\\\u4e9a\u9a6c\u900a\u9009\u54c1",
+                "G:\\AI\u9879\u76ee\u96c6\u5408\\\u4f70\u8d1d\u81fb\u7a0e\u52a1\u81ea\u67e5",
+                "G:\\AI\u9879\u76ee\u96c6\u5408\\\u5730\u56fe",
+                "G:\\AI\u9879\u76ee\u96c6\u5408\\\u5f00\u6e90ps",
+                "G:\\AI\u9879\u76ee\u96c6\u5408\\\u623f\u95f4\u8d27\u67b6",
+                "G:\\AI\u9879\u76ee\u96c6\u5408\\\u667a\u80fd\u5b88\u536b",
+                "G:\\AI\u9879\u76ee\u96c6\u5408\\\u732b\u7a97\u5e8a\u5438\u76d8",
+                "G:\\AI\u9879\u76ee\u96c6\u5408\\\u7a33\u5b9aexe\u5907\u4efd",
+                "G:\\AI\u9879\u76ee\u96c6\u5408\\\u8bb0\u8d26\u8f6f\u4ef6",
+                "G:\\AI\u9879\u76ee\u96c6\u5408\\\u8fdc\u7a0b\u63a7\u5236",
+                "G:\\AI\u9879\u76ee\u96c6\u5408\\\u9ad8\u5fb7\u5730\u56fe",
+                "G:\\AI\u9879\u76ee\u96c6\u5408\\\u732b\u7a97\u5e8a\u5b89\u88c5\u8bf4\u660e\u4e66"
+            ]
         }
     ],
     "file_mapping": {},
